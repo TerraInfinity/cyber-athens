@@ -1,5 +1,5 @@
 import { n as createServerFn, r as TSS_SERVER_FUNCTION } from "./_ssr/ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/__root-ErTBI6sJ.js
+//#region node_modules/.nitro/vite/services/ssr/assets/__root-plslSdpd.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
 	return Object.assign(splitImportFn, {
@@ -15,7 +15,7 @@ var fetchSsoUser_createServerFn_handler = createServerRpc({
 }, (opts) => fetchSsoUser.__executeServer(opts));
 var fetchSsoUser = createServerFn({ method: "GET" }).handler(fetchSsoUser_createServerFn_handler, async () => {
 	const { getRequest } = await import("./_ssr/ssr.mjs").then((n) => n.s).then((n) => n.t);
-	const { readSessionUser } = await import("./_ssr/session.server-Dgp5uo2N.mjs");
+	const { readSessionUser } = await import("./_ssr/session.server-CKci883V.mjs");
 	try {
 		return await readSessionUser(getRequest());
 	} catch {

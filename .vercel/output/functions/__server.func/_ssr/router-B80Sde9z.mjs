@@ -1,10 +1,10 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { B as require_react, _ as createRootRoute, b as require_jsx_runtime, d as useRouterState, g as createFileRoute, h as lazyRouteComponent, l as Scripts, m as Outlet, p as createRouter, u as HeadContent, v as Link, y as useRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as getRequest, i as getServerFnById, n as createServerFn, o as __exportAll, r as TSS_SERVER_FUNCTION } from "./ssr.mjs";
-import { i as RADIO_PUBLIC, t as HUB_PUBLIC } from "./paths-BzznVOzu.mjs";
+import { i as RADIO_PUBLIC, t as HUB_PUBLIC } from "./paths-ThGtzkws.mjs";
 import { a as LogIn, i as LogOut, r as TriangleAlert } from "../_libs/lucide-react.mjs";
 import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-Cj83U6qU.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-B80Sde9z.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function AppErrorComponent({ error }) {
@@ -515,7 +515,7 @@ function RootDocument() {
 		})]
 	});
 }
-var $$splitComponentImporter$3 = () => import("./routes-B0LEY-rn.mjs");
+var $$splitComponentImporter$3 = () => import("./routes-DTtbMe_e.mjs");
 var Route$9 = createFileRoute("/")({
 	loader: () => ({ host: readHostNow() }),
 	head: ({ loaderData }) => {
@@ -526,7 +526,7 @@ var Route$9 = createFileRoute("/")({
 	},
 	component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-var $$splitComponentImporter$2 = () => import("./idoru-WN-i0qd8.mjs");
+var $$splitComponentImporter$2 = () => import("./idoru-BOblLRgl.mjs");
 var Route$8 = createFileRoute("/idoru")({
 	head: () => ({ meta: [{ title: "IDORU" }, {
 		name: "description",
@@ -536,52 +536,49 @@ var Route$8 = createFileRoute("/idoru")({
 });
 var Route$7 = createFileRoute("/logout")({ server: { handlers: {
 	GET: async ({ request }) => {
-		const { logoutRedirect } = await import("./session.server-Dgp5uo2N.mjs");
+		const { logoutRedirect } = await import("./session.server-CKci883V.mjs");
 		return logoutRedirect(request);
 	},
 	POST: async ({ request }) => {
-		const { logoutRedirect } = await import("./session.server-Dgp5uo2N.mjs");
+		const { logoutRedirect } = await import("./session.server-CKci883V.mjs");
 		return logoutRedirect(request);
 	}
 } } });
-var $$splitComponentImporter$1 = () => import("./media-empire-B7Y5hNZw.mjs");
+var $$splitComponentImporter$1 = () => import("./media-empire-Db91BQfk.mjs");
 var Route$6 = createFileRoute("/media-empire")({
 	head: () => ({ meta: [{ title: "Media Empire" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./menu-B7iiu_4T.mjs");
+var $$splitComponentImporter = () => import("./menu-hMQcPs_a.mjs");
 var Route$5 = createFileRoute("/menu")({
 	head: () => ({ meta: [{ title: "Menu — Pulse of the Glåümosphere" }] }),
 	component: lazyRouteComponent($$splitComponentImporter, "component")
 });
 var Route$4 = createFileRoute("/api/sso/consume")({ server: { handlers: { GET: async ({ request }) => {
-	const { consumeCode } = await import("./session.server-Dgp5uo2N.mjs");
+	const { consumeCode, missingCodeResponse } = await import("./session.server-CKci883V.mjs");
 	const url = new URL(request.url);
 	const code = url.searchParams.get("code")?.trim() ?? "";
 	const next = url.searchParams.get("next");
-	if (!code) return new Response(null, {
-		status: 302,
-		headers: { Location: "/?sso=missing" }
-	});
+	if (!code) return missingCodeResponse();
 	return consumeCode(request, code, next);
 } } } });
 var Route$3 = createFileRoute("/api/sso/login")({ server: { handlers: { GET: async ({ request }) => {
-	const { loginRedirect } = await import("./session.server-Dgp5uo2N.mjs");
+	const { loginRedirect } = await import("./session.server-CKci883V.mjs");
 	return loginRedirect(request, new URL(request.url).searchParams.get("next"));
 } } } });
 var Route$2 = createFileRoute("/api/sso/logout")({ server: { handlers: {
 	GET: async ({ request }) => {
-		const { logoutRedirect } = await import("./session.server-Dgp5uo2N.mjs");
+		const { logoutRedirect } = await import("./session.server-CKci883V.mjs");
 		return logoutRedirect(request);
 	},
 	POST: async ({ request }) => {
-		const { logoutRedirect } = await import("./session.server-Dgp5uo2N.mjs");
+		const { logoutRedirect } = await import("./session.server-CKci883V.mjs");
 		return logoutRedirect(request);
 	}
 } } });
 var Route$1 = createFileRoute("/api/sso/profile")({ server: { handlers: { POST: async ({ request }) => {
-	const { readSessionUser, signSession } = await import("./session.server-Dgp5uo2N.mjs");
-	const { sessionCookieHeader } = await import("./cookie-ewi-Xsz2.mjs");
+	const { readSessionUser, signSession } = await import("./session.server-CKci883V.mjs");
+	const { sessionCookieHeader } = await import("./cookie-CnmFImgt.mjs");
 	const user = await readSessionUser(request);
 	if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 	let body = null;
@@ -601,7 +598,7 @@ var Route$1 = createFileRoute("/api/sso/profile")({ server: { handlers: { POST: 
 	return Response.json({ user: next }, { headers: { "Set-Cookie": sessionCookieHeader(request, token) } });
 } } } });
 var Route = createFileRoute("/api/sso/session")({ server: { handlers: { GET: async ({ request }) => {
-	const { readSessionUser } = await import("./session.server-Dgp5uo2N.mjs");
+	const { readSessionUser } = await import("./session.server-CKci883V.mjs");
 	const user = await readSessionUser(request);
 	return Response.json({ user });
 } } } });

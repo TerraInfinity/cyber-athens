@@ -1,8 +1,8 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { B as require_react, b as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
-import { n as IDORU_VIDEO_ID } from "./paths-BzznVOzu.mjs";
+import { n as IDORU_VIDEO_ID } from "./paths-ThGtzkws.mjs";
 import { n as Volume2, t as VolumeX } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/idoru-room-BL8BfzBG.js
+//#region node_modules/.nitro/vite/services/ssr/assets/idoru-room-DoqtgFbZ.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var EMBED = `https://www.youtube-nocookie.com/embed/${IDORU_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${IDORU_VIDEO_ID}&controls=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&iv_load_policy=3&fs=0&cc_load_policy=0&enablejsapi=1`;

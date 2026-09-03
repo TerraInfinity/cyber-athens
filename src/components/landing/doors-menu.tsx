@@ -3,9 +3,6 @@ import { Link } from "@tanstack/react-router";
 export function DoorsMenu() {
   return (
     <main className="menu-body">
-      <Link className="menu-back" to="/">
-        back
-      </Link>
       <nav className="menu-doors" aria-label="Doors">
         <Link className="menu-door" to="/media-empire">
           Media Empire
@@ -22,14 +19,6 @@ export function DoorsMenu() {
           IDORU
         </Link>
       </nav>
-      <a
-        className="menu-tertiary"
-        href="https://radio.terrainfinity.ca"
-        rel="noreferrer"
-        target="_blank"
-      >
-        Radio
-      </a>
       <a
         className="tiny-tardis"
         href="https://altar-of-chaos.cyber-athens.ca"

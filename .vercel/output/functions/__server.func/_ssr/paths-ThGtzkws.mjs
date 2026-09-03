@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/paths-BzznVOzu.js
+//#region node_modules/.nitro/vite/services/ssr/assets/paths-ThGtzkws.js
 var APEX_ORIGIN = "https://cyber-athens.ca";
 var WWW_ORIGIN = "https://www.cyber-athens.ca";
 var HUB_PUBLIC = "https://terrainfinity.ca";
@@ -6,6 +6,12 @@ var RADIO_PUBLIC = "https://radio.terrainfinity.ca";
 var IDORU_VIDEO_ID = "oCrhTU9HkVQ";
 var SESSION_COOKIE = "ca_session";
 var NEXT_COOKIE = "ca_sso_next";
+var ALLOWED_NEXT = /* @__PURE__ */ new Set([
+	"/",
+	"/menu",
+	"/media-empire",
+	"/idoru"
+]);
 function stripPort(host) {
 	return host.trim().toLowerCase().replace(/:\d+$/, "");
 }
@@ -27,8 +33,9 @@ function safeRelativePath(raw) {
 	if (!value.startsWith("/")) return "/";
 	if (value.startsWith("//") || value.startsWith("/\\")) return "/";
 	if (value.includes("://") || value.includes("\\")) return "/";
-	if (value.startsWith("/api/sso") || value === "/logout") return "/";
-	return value;
+	const pathOnly = value.split("?")[0]?.split("#")[0] ?? "/";
+	const normalized = pathOnly.length > 1 ? pathOnly.replace(/\/+$/, "") : pathOnly;
+	return ALLOWED_NEXT.has(normalized) ? normalized : "/";
 }
 function parseSsoUser(data) {
 	if (!data || typeof data !== "object") return null;

@@ -3,11 +3,14 @@ import type { SsoUser } from "./types";
 export const APEX_ORIGIN = "https://cyber-athens.ca";
 export const WWW_ORIGIN = "https://www.cyber-athens.ca";
 export const HUB_PUBLIC = "https://terrainfinity.ca";
+export const HUB_SSO_DEFAULT = "https://www.terrainfinity.ca";
 export const RADIO_PUBLIC = "https://radio.terrainfinity.ca";
 export const IDORU_VIDEO_ID = "oCrhTU9HkVQ";
 
 export const SESSION_COOKIE = "ca_session";
 export const NEXT_COOKIE = "ca_sso_next";
+
+const ALLOWED_NEXT = new Set(["/", "/menu", "/media-empire", "/idoru"]);
 
 export function stripPort(host: string): string {
   return host.trim().toLowerCase().replace(/:\d+$/, "");
@@ -33,8 +36,9 @@ export function safeRelativePath(raw: string | null | undefined): string {
   if (!value.startsWith("/")) return "/";
   if (value.startsWith("//") || value.startsWith("/\\")) return "/";
   if (value.includes("://") || value.includes("\\")) return "/";
-  if (value.startsWith("/api/sso") || value === "/logout") return "/";
-  return value;
+  const pathOnly = value.split("?")[0]?.split("#")[0] ?? "/";
+  const normalized = pathOnly.length > 1 ? pathOnly.replace(/\/+$/, "") : pathOnly;
+  return ALLOWED_NEXT.has(normalized) ? normalized : "/";
 }
 
 export function parseSsoUser(data: unknown): SsoUser | null {

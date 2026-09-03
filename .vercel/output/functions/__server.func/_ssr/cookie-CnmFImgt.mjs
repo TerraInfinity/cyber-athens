@@ -1,5 +1,5 @@
-import { a as SESSION_COOKIE, o as isCyberAthensHost, r as NEXT_COOKIE } from "./paths-BzznVOzu.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/cookie-ewi-Xsz2.js
+import { a as SESSION_COOKIE, o as isCyberAthensHost, r as NEXT_COOKIE } from "./paths-ThGtzkws.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/cookie-CnmFImgt.js
 function requestHost(request) {
 	return ((request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "").split(",")[0]?.trim() ?? "").toLowerCase();
 }
