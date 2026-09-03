@@ -1,0 +1,125 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { background:#222; color:#eee; font: 14px/1.4 sans-serif; padding:24px; }
+  .row { display:flex; gap:32px; align-items:flex-end; margin:24px 0; flex-wrap:wrap; }
+  .cell { text-align:center; }
+  .cell span { display:block; font-size:11px; color:#aaa; margin-top:6px; }
+  .grid { image-rendering: pixelated; background:
+    repeating-conic-gradient(#333 0 25%, #444 0 50%) 0 0/8px 8px; padding:8px; }
+  img, svg { display:block; }
+</style>
+</head><body>
+<h1>CA favicon variants</h1>
+
+<section>
+<h2>A — lockup C + lambda A</h2>
+<div class="row">
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16">
+      <rect width="32" height="32" fill="#000000"/>
+      <path fill="#c9a86c" d="M21 7.2A9.8 9.8 0 1 0 21 24.8l-3-2.15A6.4 6.4 0 1 1 18 9.35z"/>
+      <path fill="#c9a86c" d="M17.6 7 28.2 25.4h-4.6L17.6 14.2 11.8 25.4H7.2z"/>
+    </svg>
+  </div><span>16</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+      <rect width="32" height="32" fill="#000000"/>
+      <path fill="#c9a86c" d="M21 7.2A9.8 9.8 0 1 0 21 24.8l-3-2.15A6.4 6.4 0 1 1 18 9.35z"/>
+      <path fill="#c9a86c" d="M17.6 7 28.2 25.4h-4.6L17.6 14.2 11.8 25.4H7.2z"/>
+    </svg>
+  </div><span>32</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64">
+      <rect width="32" height="32" fill="#000000"/>
+      <path fill="#c9a86c" d="M21 7.2A9.8 9.8 0 1 0 21 24.8l-3-2.15A6.4 6.4 0 1 1 18 9.35z"/>
+      <path fill="#c9a86c" d="M17.6 7 28.2 25.4h-4.6L17.6 14.2 11.8 25.4H7.2z"/>
+    </svg>
+  </div><span>64</span></div>
+</div>
+</section>
+
+<section>
+<h2>B — side-by-side C + A with bar</h2>
+<div class="row">
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16">
+      <rect width="32" height="32" fill="#000000"/>
+      <path fill="#c9a86c" d="M15.6 6.2A10 10 0 1 0 15.6 25.8L12.4 23.4A6.6 6.6 0 1 1 12.4 8.6z"/>
+      <path fill="#c9a86c" fill-rule="evenodd" d="M21.4 6.6 29.8 25.8h-4l-1.6-3.6h-6.4L16.2 25.8h-4L21.4 6.6zm0 6.4-2.2 4.8h4.4z"/>
+    </svg>
+  </div><span>16</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+      <rect width="32" height="32" fill="#000000"/>
+      <path fill="#c9a86c" d="M15.6 6.2A10 10 0 1 0 15.6 25.8L12.4 23.4A6.6 6.6 0 1 1 12.4 8.6z"/>
+      <path fill="#c9a86c" fill-rule="evenodd" d="M21.4 6.6 29.8 25.8h-4l-1.6-3.6h-6.4L16.2 25.8h-4L21.4 6.6zm0 6.4-2.2 4.8h4.4z"/>
+    </svg>
+  </div><span>32</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64">
+      <rect width="32" height="32" fill="#000000"/>
+      <path fill="#c9a86c" d="M15.6 6.2A10 10 0 1 0 15.6 25.8L12.4 23.4A6.6 6.6 0 1 1 12.4 8.6z"/>
+      <path fill="#c9a86c" fill-rule="evenodd" d="M21.4 6.6 29.8 25.8h-4l-1.6-3.6h-6.4L16.2 25.8h-4L21.4 6.6zm0 6.4-2.2 4.8h4.4z"/>
+    </svg>
+  </div><span>64</span></div>
+</div>
+</section>
+
+<section>
+<h2>C — thick stroke CA</h2>
+<div class="row">
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16">
+      <rect width="32" height="32" fill="#000000"/>
+      <g fill="none" stroke="#c9a86c" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="miter">
+        <path d="M20.2 8.2A8.4 8.4 0 1 0 20.2 23.8"/>
+        <path d="M16.4 8.2 L25.8 24.4 M16.4 8.2 L11.2 24.4"/>
+      </g>
+    </svg>
+  </div><span>16</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+      <rect width="32" height="32" fill="#000000"/>
+      <g fill="none" stroke="#c9a86c" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="miter">
+        <path d="M20.2 8.2A8.4 8.4 0 1 0 20.2 23.8"/>
+        <path d="M16.4 8.2 L25.8 24.4 M16.4 8.2 L11.2 24.4"/>
+      </g>
+    </svg>
+  </div><span>32</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64">
+      <rect width="32" height="32" fill="#000000"/>
+      <g fill="none" stroke="#c9a86c" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="miter">
+        <path d="M20.2 8.2A8.4 8.4 0 1 0 20.2 23.8"/>
+        <path d="M16.4 8.2 L25.8 24.4 M16.4 8.2 L11.2 24.4"/>
+      </g>
+    </svg>
+  </div><span>64</span></div>
+</div>
+</section>
+
+<section>
+<h2>D — current text CA in gold</h2>
+<div class="row">
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16">
+      <rect width="32" height="32" fill="#000"/>
+      <text x="16" y="23" text-anchor="middle" fill="#c9a86c" font-size="18" font-family="Georgia, 'Times New Roman', serif" font-weight="700">CA</text>
+    </svg>
+  </div><span>16</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+      <rect width="32" height="32" fill="#000"/>
+      <text x="16" y="23" text-anchor="middle" fill="#c9a86c" font-size="18" font-family="Georgia, 'Times New Roman', serif" font-weight="700">CA</text>
+    </svg>
+  </div><span>32</span></div>
+  <div class="cell"><div class="grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64">
+      <rect width="32" height="32" fill="#000"/>
+      <text x="16" y="23" text-anchor="middle" fill="#c9a86c" font-size="18" font-family="Georgia, 'Times New Roman', serif" font-weight="700">CA</text>
+    </svg>
+  </div><span>64</span></div>
+</div>
+</section>
+</body></html>

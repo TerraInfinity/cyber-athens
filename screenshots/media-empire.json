@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/media-empire",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Media Empire",
+      "hasCanvas": false,
+      "bodyTextLen": 142,
+      "bodyTextHash": "9d540e4456219c745c1d7cf32a0ce800f66a983ffa9f737a42669c55bc8ec9c8",
+      "bodyTextPrefix": "CA TERRAINFINITY RADIO SIGN IN WITH GOOGLE MENU Our customer is ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/media-empire.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Media Empire",
+      "hasCanvas": false,
+      "bodyTextLen": 142,
+      "bodyTextHash": "9d540e4456219c745c1d7cf32a0ce800f66a983ffa9f737a42669c55bc8ec9c8",
+      "bodyTextPrefix": "CA TERRAINFINITY RADIO SIGN IN WITH GOOGLE MENU Our customer is ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/media-empire-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/media-empire.json"
+}

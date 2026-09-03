@@ -1,0 +1,133 @@
+import { v as Link, x as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/menu-BcTSDtNJ.js
+var import_jsx_runtime = require_jsx_runtime();
+var DOORS = [
+	{
+		id: "media-empire",
+		label: "Media Empire",
+		to: "/media-empire"
+	},
+	{
+		id: "c",
+		label: "C",
+		href: "https://c.terrainfinity.ca"
+	},
+	{
+		id: "idoru",
+		label: "IDORU",
+		href: "https://idoru.cyber-athens.ca"
+	}
+];
+function DoorsMenu() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
+		className: "menu-body",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+				className: "menu-back",
+				to: "/",
+				children: "back"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
+				className: "menu-doors",
+				"aria-label": "Doors",
+				children: DOORS.map((door) => "to" in door ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+					className: "menu-door",
+					to: door.to,
+					children: door.label
+				}, door.id) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+					className: "menu-door",
+					href: door.href,
+					rel: "noreferrer",
+					target: "_blank",
+					children: door.label
+				}, door.id))
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+				className: "menu-tertiary",
+				href: "https://radio.terrainfinity.ca",
+				rel: "noreferrer",
+				target: "_blank",
+				children: "Radio"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+				className: "tiny-tardis",
+				href: "https://altar-of-chaos.cyber-athens.ca",
+				"aria-label": "Hidden door",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+					viewBox: "0 0 24 40",
+					width: "18",
+					height: "30",
+					"aria-hidden": true,
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "10",
+							y: "1",
+							width: "4",
+							height: "4",
+							fill: "currentColor"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "3",
+							y: "5",
+							width: "18",
+							height: "3",
+							fill: "currentColor"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "4",
+							y: "8",
+							width: "16",
+							height: "30",
+							fill: "none",
+							stroke: "currentColor",
+							strokeWidth: "1.4"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "7",
+							y: "12",
+							width: "4",
+							height: "6",
+							fill: "currentColor",
+							opacity: "0.55"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "13",
+							y: "12",
+							width: "4",
+							height: "6",
+							fill: "currentColor",
+							opacity: "0.55"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "7",
+							y: "21",
+							width: "4",
+							height: "6",
+							fill: "currentColor",
+							opacity: "0.35"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "13",
+							y: "21",
+							width: "4",
+							height: "6",
+							fill: "currentColor",
+							opacity: "0.35"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+							x1: "4",
+							y1: "30",
+							x2: "20",
+							y2: "30",
+							stroke: "currentColor",
+							strokeWidth: "1.2"
+						})
+					]
+				})
+			})
+		]
+	});
+}
+var SplitComponent = DoorsMenu;
+//#endregion
+export { SplitComponent as component };

@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Pulse of the Glåümosphere",
+      "hasCanvas": false,
+      "bodyTextLen": 31,
+      "bodyTextHash": "b08b21c39460a515a5cff11435374b19aa14d69f5aea8b45c46d55dda5d313a1",
+      "bodyTextPrefix": "COMING SOON! Sponsored by Glåüm",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Pulse of the Glåümosphere",
+      "hasCanvas": false,
+      "bodyTextLen": 31,
+      "bodyTextHash": "b08b21c39460a515a5cff11435374b19aa14d69f5aea8b45c46d55dda5d313a1",
+      "bodyTextPrefix": "COMING SOON! Sponsored by Glåüm",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
