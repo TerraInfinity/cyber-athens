@@ -16,7 +16,7 @@ var grokOgIdentity = { "site": {
 	"type": "x:game",
 	"card": "custom",
 	"color": "000000",
-	"description": "Pulse of the Glåümosphere. Coming soon. Media Empire — enter, player of games.",
+	"description": "Pulse of the Glåümosphere. Coming soon. IDORU. Media Empire.",
 	"image": "/og.jpg",
 	"banner": "/x-banner.jpg"
 } };

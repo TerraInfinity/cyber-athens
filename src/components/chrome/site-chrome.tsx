@@ -1,10 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { HUB_PUBLIC, RADIO_PUBLIC } from "@/lib/sso/paths";
 import { useSsoState } from "@/lib/sso/context";
+import { useRoom } from "@/lib/use-host";
 
 export function SiteChrome() {
   const path = useRouterState({ select: (s) => s.location.pathname });
-  const isPoster = path === "/";
+  const room = useRoom();
+  const isPoster = path === "/" && room === "landing";
   const isMenu = path === "/menu";
   const { user, isPending } = useSsoState();
   const next = `/api/sso/login?next=${encodeURIComponent(path || "/")}`;

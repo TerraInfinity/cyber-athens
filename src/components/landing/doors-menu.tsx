@@ -1,11 +1,5 @@
 import { Link } from "@tanstack/react-router";
 
-const DOORS = [
-  { id: "media-empire", label: "Media Empire", to: "/media-empire" as const },
-  { id: "c", label: "C", href: "https://c.terrainfinity.ca" },
-  { id: "idoru", label: "IDORU", href: "https://idoru.cyber-athens.ca" },
-] as const;
-
 export function DoorsMenu() {
   return (
     <main className="menu-body">
@@ -13,23 +7,20 @@ export function DoorsMenu() {
         back
       </Link>
       <nav className="menu-doors" aria-label="Doors">
-        {DOORS.map((door) =>
-          "to" in door ? (
-            <Link key={door.id} className="menu-door" to={door.to}>
-              {door.label}
-            </Link>
-          ) : (
-            <a
-              key={door.id}
-              className="menu-door"
-              href={door.href}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {door.label}
-            </a>
-          ),
-        )}
+        <Link className="menu-door" to="/media-empire">
+          Media Empire
+        </Link>
+        <a
+          className="menu-door"
+          href="https://c.terrainfinity.ca"
+          rel="noreferrer"
+          target="_blank"
+        >
+          C
+        </a>
+        <Link className="menu-door" to="/idoru">
+          IDORU
+        </Link>
       </nav>
       <a
         className="menu-tertiary"

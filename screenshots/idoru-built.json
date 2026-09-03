@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/idoru",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "IDORU",
+      "hasCanvas": false,
+      "bodyTextLen": 118,
+      "bodyTextHash": "d6fe46325786e4fe7199020e8b78a0037c5a17e70bd9c0493b33d003b26ed79c",
+      "bodyTextPrefix": "CA TERRAINFINITY RADIO SIGN IN WITH GOOGLE MENU IDORU Let's play",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/idoru-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "IDORU",
+      "hasCanvas": false,
+      "bodyTextLen": 118,
+      "bodyTextHash": "d6fe46325786e4fe7199020e8b78a0037c5a17e70bd9c0493b33d003b26ed79c",
+      "bodyTextPrefix": "CA TERRAINFINITY RADIO SIGN IN WITH GOOGLE MENU IDORU Let's play",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/idoru-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/idoru-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

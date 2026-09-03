@@ -1,5 +1,5 @@
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
+import { createReadStream, existsSync, readdirSync, statSync } from "node:fs";
+import { join, normalize, relative } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -142,6 +142,55 @@ function authPopupPlugin(): Plugin {
   };
 }
 
+function builtAssetFallbackPlugin(): Plugin {
+  return {
+    name: "app-builder:built-asset-fallback",
+    apply: "serve",
+    configureServer(server) {
+      const root = join(server.config.root, ".vercel/output/static");
+      return () => {
+        server.middlewares.use((req, res, next) => {
+          const pathOnly = decodeURIComponent((req.url ?? "").split("?", 1)[0] ?? "");
+          if (!pathOnly.startsWith("/assets/") || pathOnly.includes("\0")) {
+            next();
+            return;
+          }
+          const file = normalize(join(root, pathOnly));
+          const rel = relative(root, file);
+          if (!rel || rel.startsWith("..") || !existsSync(file)) {
+            next();
+            return;
+          }
+          try {
+            if (!statSync(file).isFile()) {
+              next();
+              return;
+            }
+          } catch {
+            next();
+            return;
+          }
+          const type = pathOnly.endsWith(".css")
+            ? "text/css; charset=utf-8"
+            : pathOnly.endsWith(".js")
+              ? "text/javascript; charset=utf-8"
+              : pathOnly.endsWith(".woff2")
+                ? "font/woff2"
+                : "application/octet-stream";
+          res.statusCode = 200;
+          res.setHeader("content-type", type);
+          res.setHeader("cache-control", "no-store");
+          if ((req.method ?? "GET").toUpperCase() === "HEAD") {
+            res.end();
+            return;
+          }
+          createReadStream(file).pipe(res);
+        });
+      };
+    },
+  };
+}
+
 // `0.0.0.0:8080` is the live-preview contract — don't change host/port.
 // The dev server starts once `src/router.tsx` and `src/routes/` exist — see
 // AGENTS.md § "First scaffold".
@@ -159,6 +208,7 @@ export default defineConfig(({ command, isPreview }) => ({
   resolve: { tsconfigPaths: true },
   plugins: [
     pgliteBootstrapPlugin(),
+    builtAssetFallbackPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.
     authPopupPlugin(),
     // Dev-only /__app-env, read by scripts/check-auth-invariant.mjs.

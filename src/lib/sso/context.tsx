@@ -59,10 +59,6 @@ export function SsoProvider({
   return <SsoContext.Provider value={value}>{children}</SsoContext.Provider>;
 }
 
-export function useSsoUser(): SsoUser | null {
-  return useContext(SsoContext).user;
-}
-
 export function useSsoState(): SsoState {
   return useContext(SsoContext);
 }

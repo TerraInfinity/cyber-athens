@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as IdoruRouteImport } from './routes/idoru'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as MediaEmpireRouteImport } from './routes/media-empire'
 import { Route as MenuRouteImport } from './routes/menu'
@@ -22,6 +23,11 @@ import { Route as ApiSsoSessionRouteImport } from './routes/api/sso/session'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IdoruRoute = IdoruRouteImport.update({
+  id: '/idoru',
+  path: '/idoru',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LogoutRoute = LogoutRouteImport.update({
@@ -67,6 +73,7 @@ const ApiSsoSessionRoute = ApiSsoSessionRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/idoru': typeof IdoruRoute
   '/logout': typeof LogoutRoute
   '/media-empire': typeof MediaEmpireRoute
   '/menu': typeof MenuRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/idoru': typeof IdoruRoute
   '/logout': typeof LogoutRoute
   '/media-empire': typeof MediaEmpireRoute
   '/menu': typeof MenuRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/idoru': typeof IdoruRoute
   '/logout': typeof LogoutRoute
   '/media-empire': typeof MediaEmpireRoute
   '/menu': typeof MenuRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/idoru'
     | '/logout'
     | '/media-empire'
     | '/menu'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/idoru'
     | '/logout'
     | '/media-empire'
     | '/menu'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/idoru'
     | '/logout'
     | '/media-empire'
     | '/menu'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IdoruRoute: typeof IdoruRoute
   LogoutRoute: typeof LogoutRoute
   MediaEmpireRoute: typeof MediaEmpireRoute
   MenuRoute: typeof MenuRoute
@@ -154,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/idoru': {
+      id: '/idoru'
+      path: '/idoru'
+      fullPath: '/idoru'
+      preLoaderRoute: typeof IdoruRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/logout': {
@@ -217,6 +237,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IdoruRoute: IdoruRoute,
   LogoutRoute: LogoutRoute,
   MediaEmpireRoute: MediaEmpireRoute,
   MenuRoute: MenuRoute,

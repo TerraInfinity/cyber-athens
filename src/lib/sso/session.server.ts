@@ -123,14 +123,6 @@ export async function consumeCode(
   return new Response(null, { status: 302, headers });
 }
 
-export async function writeSession(
-  request: Request,
-  user: SsoUser,
-): Promise<string> {
-  const token = await signSession(user);
-  return sessionCookieHeader(request, token);
-}
-
 export function logoutRedirect(request: Request): Response {
   const origin = thisOrigin(request);
   const target = new URL("/api/sso/logout", hubOrigin());

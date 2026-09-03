@@ -5,7 +5,3 @@ export type SsoUser = {
   image: string | null;
   googleSub: string | null;
 };
-
-export type SsoSessionPayload = {
-  user: SsoUser | null;
-};

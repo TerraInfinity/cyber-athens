@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 
 const TITLE = "COMING SOON!";
 const WHISPER = "Let's play a beautiful game...";
@@ -50,28 +50,12 @@ function ComingTitle() {
 }
 
 export function ComingSoon() {
-  const navigate = useNavigate();
-
   return (
     <>
-      <main
-        className="poster"
-        role="link"
-        tabIndex={0}
-        aria-label="Open menu"
-        onClick={() => navigate({ to: "/menu" })}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            navigate({ to: "/menu" });
-          }
-        }}
-      >
+      <Link to="/menu" className="poster" aria-label="Open menu">
         <div className="poster-gate" aria-hidden />
         <div className="poster-veil" aria-hidden />
         <div className="section section-body poster-lockup">
-          <div id="motesLayer" className="hidden" aria-hidden />
-          <div id="spritesLayer" className="hidden" aria-hidden />
           <div className="logo-wrapper image">
             <img
               className="graphic-logo"
@@ -83,13 +67,12 @@ export function ComingSoon() {
           </div>
           <ComingTitle />
         </div>
-      </main>
+      </Link>
       <a
         className="sponsor-mark"
         href="https://glaum.ca"
         rel="noreferrer"
         target="_blank"
-        onClick={(event) => event.stopPropagation()}
       >
         Sponsored by Glåüm
       </a>
