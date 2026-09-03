@@ -60,7 +60,6 @@ body {
 }
 
 .chrome-link,
-.chrome-signin,
 .chrome-name {
   pointer-events: auto;
   color: var(--color-quiet);
@@ -78,9 +77,25 @@ body {
 .chrome-ca { letter-spacing: 0.2em; }
 
 .chrome-link:hover,
-.chrome-link:focus-visible,
-.chrome-signin:hover,
-.chrome-signin:focus-visible {
+.chrome-link:focus-visible {
+  color: var(--color-ink);
+}
+
+.chrome-icon {
+  pointer-events: auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--color-quiet);
+  background: none;
+  border: 0;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chrome-icon:hover,
+.chrome-icon:focus-visible {
   color: var(--color-ink);
 }
 
@@ -117,10 +132,46 @@ body {
 }
 
 .chrome-slot {
-  width: 7.5rem;
-  height: 1.2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   display: block;
   background: color-mix(in oklab, var(--color-ink) 8%, transparent);
+}
+
+.site-foot {
+  z-index: 30;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.15rem;
+  padding: 0.65rem 1rem;
+}
+
+.site-foot a {
+  pointer-events: auto;
+  color: var(--color-quiet);
+  opacity: 0.48;
+  font-family: var(--font-coming);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-decoration: none;
+  min-height: 44px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-foot a:hover,
+.site-foot a:focus-visible {
+  color: var(--color-ink);
+  opacity: 1;
 }
 
 .section {
@@ -693,7 +744,7 @@ body {
     padding-left: 0.22em;
     font-size: clamp(1.85rem, 11vw, 2.6rem);
   }
-  .idoru-room { padding-bottom: 5.25rem; }
+  .idoru-room { padding-bottom: 6.25rem; }
 }
 
 @media only screen and (width <= 560px) {

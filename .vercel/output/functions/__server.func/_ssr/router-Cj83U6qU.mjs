@@ -2,9 +2,9 @@ import { i as __toESM } from "../_runtime.mjs";
 import { B as require_react, _ as createRootRoute, b as require_jsx_runtime, d as useRouterState, g as createFileRoute, h as lazyRouteComponent, l as Scripts, m as Outlet, p as createRouter, u as HeadContent, v as Link, y as useRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as getRequest, i as getServerFnById, n as createServerFn, o as __exportAll, r as TSS_SERVER_FUNCTION } from "./ssr.mjs";
 import { i as RADIO_PUBLIC, t as HUB_PUBLIC } from "./paths-BzznVOzu.mjs";
-import { r as TriangleAlert } from "../_libs/lucide-react.mjs";
+import { a as LogIn, i as LogOut, r as TriangleAlert } from "../_libs/lucide-react.mjs";
 import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-CjkcKk5O.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-Cj83U6qU.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function AppErrorComponent({ error }) {
@@ -383,31 +383,17 @@ function SiteChrome() {
 	const { user, isPending } = useSsoState();
 	const next = `/api/sso/login?next=${encodeURIComponent(path || "/")}`;
 	if (isPoster) return null;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 		className: "site-chrome",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
 			className: "site-chrome-left",
-			"aria-label": "Network",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
-					to: "/",
-					className: "chrome-link chrome-ca",
-					"aria-label": "Cyber Athens",
-					children: "CA"
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-					className: "chrome-link",
-					href: HUB_PUBLIC,
-					rel: "noreferrer",
-					children: "Terrainfinity"
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-					className: "chrome-link",
-					href: RADIO_PUBLIC,
-					rel: "noreferrer",
-					children: "Radio"
-				})
-			]
+			"aria-label": "House",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+				to: "/",
+				className: "chrome-link chrome-ca",
+				"aria-label": "Cyber Athens",
+				children: "CA"
+			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "site-chrome-right",
 			children: [isPending ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -415,39 +401,53 @@ function SiteChrome() {
 				"aria-hidden": true
 			}) : user ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "chrome-identity",
-				children: [
-					user.image ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-						className: "chrome-avatar",
-						src: user.image,
-						alt: ""
-					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "chrome-avatar is-fallback",
-						"aria-hidden": true,
-						children: (user.name ?? user.email ?? "A").charAt(0).toUpperCase()
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "chrome-name",
-						children: user.name ?? user.email ?? "Signed in"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-						className: "chrome-link",
-						href: "/logout",
-						children: "Sign out"
+				children: [user.image ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+					className: "chrome-avatar",
+					src: user.image,
+					alt: ""
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "chrome-avatar is-fallback",
+					"aria-hidden": true,
+					children: (user.name ?? user.email ?? "A").charAt(0).toUpperCase()
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+					className: "chrome-icon",
+					href: "/logout",
+					"aria-label": "Sign out",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogOut, {
+						size: 16,
+						strokeWidth: 2,
+						"aria-hidden": true
 					})
-				]
+				})]
 			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-				className: "chrome-link chrome-signin",
+				className: "chrome-icon",
 				href: next,
-				children: "Sign in with Google"
+				"aria-label": "Sign in",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogIn, {
+					size: 16,
+					strokeWidth: 2,
+					"aria-hidden": true
+				})
 			}), !isMenu ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 				to: "/menu",
 				className: "chrome-link",
 				children: "menu"
 			}) : null]
 		})]
-	});
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("footer", {
+		className: "site-foot",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+			href: HUB_PUBLIC,
+			rel: "noreferrer",
+			children: "Terrainfinity"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+			href: RADIO_PUBLIC,
+			rel: "noreferrer",
+			children: "Radio"
+		})]
+	})] });
 }
-var styles_default = "/assets/styles-DazOba6Z.css";
+var styles_default = "/assets/styles-0dBRtYqM.css";
 var APP_NAME = "Pulse of the Glåümosphere";
 var fetchSsoUser = createServerFn({ method: "GET" }).handler(createSsrRpc("d427fe6317f573fa38ddd6092319faa64007648068250a0fe0f7a20788000b7e"));
 var Route$10 = createRootRoute({
@@ -515,7 +515,7 @@ function RootDocument() {
 		})]
 	});
 }
-var $$splitComponentImporter$3 = () => import("./routes-CScaDZcX.mjs");
+var $$splitComponentImporter$3 = () => import("./routes-B0LEY-rn.mjs");
 var Route$9 = createFileRoute("/")({
 	loader: () => ({ host: readHostNow() }),
 	head: ({ loaderData }) => {
@@ -544,7 +544,7 @@ var Route$7 = createFileRoute("/logout")({ server: { handlers: {
 		return logoutRedirect(request);
 	}
 } } });
-var $$splitComponentImporter$1 = () => import("./media-empire-BOfkQMY8.mjs");
+var $$splitComponentImporter$1 = () => import("./media-empire-B7Y5hNZw.mjs");
 var Route$6 = createFileRoute("/media-empire")({
 	head: () => ({ meta: [{ title: "Media Empire" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")

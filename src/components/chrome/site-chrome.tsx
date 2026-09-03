@@ -1,4 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { LogIn, LogOut } from "lucide-react";
 import { HUB_PUBLIC, RADIO_PUBLIC } from "@/lib/sso/paths";
 import { useSsoState } from "@/lib/sso/context";
 import { useRoom } from "@/lib/use-host";
@@ -14,48 +15,49 @@ export function SiteChrome() {
   if (isPoster) return null;
 
   return (
-    <header className="site-chrome">
-      <nav className="site-chrome-left" aria-label="Network">
-        <Link to="/" className="chrome-link chrome-ca" aria-label="Cyber Athens">
-          CA
-        </Link>
-        <a className="chrome-link" href={HUB_PUBLIC} rel="noreferrer">
+    <>
+      <header className="site-chrome">
+        <nav className="site-chrome-left" aria-label="House">
+          <Link to="/" className="chrome-link chrome-ca" aria-label="Cyber Athens">
+            CA
+          </Link>
+        </nav>
+        <div className="site-chrome-right">
+          {isPending ? (
+            <span className="chrome-slot" aria-hidden />
+          ) : user ? (
+            <div className="chrome-identity">
+              {user.image ? (
+                <img className="chrome-avatar" src={user.image} alt="" />
+              ) : (
+                <span className="chrome-avatar is-fallback" aria-hidden>
+                  {(user.name ?? user.email ?? "A").charAt(0).toUpperCase()}
+                </span>
+              )}
+              <a className="chrome-icon" href="/logout" aria-label="Sign out">
+                <LogOut size={16} strokeWidth={2} aria-hidden />
+              </a>
+            </div>
+          ) : (
+            <a className="chrome-icon" href={next} aria-label="Sign in">
+              <LogIn size={16} strokeWidth={2} aria-hidden />
+            </a>
+          )}
+          {!isMenu ? (
+            <Link to="/menu" className="chrome-link">
+              menu
+            </Link>
+          ) : null}
+        </div>
+      </header>
+      <footer className="site-foot">
+        <a href={HUB_PUBLIC} rel="noreferrer">
           Terrainfinity
         </a>
-        <a className="chrome-link" href={RADIO_PUBLIC} rel="noreferrer">
+        <a href={RADIO_PUBLIC} rel="noreferrer">
           Radio
         </a>
-      </nav>
-      <div className="site-chrome-right">
-        {isPending ? (
-          <span className="chrome-slot" aria-hidden />
-        ) : user ? (
-          <div className="chrome-identity">
-            {user.image ? (
-              <img className="chrome-avatar" src={user.image} alt="" />
-            ) : (
-              <span className="chrome-avatar is-fallback" aria-hidden>
-                {(user.name ?? user.email ?? "A").charAt(0).toUpperCase()}
-              </span>
-            )}
-            <span className="chrome-name">
-              {user.name ?? user.email ?? "Signed in"}
-            </span>
-            <a className="chrome-link" href="/logout">
-              Sign out
-            </a>
-          </div>
-        ) : (
-          <a className="chrome-link chrome-signin" href={next}>
-            Sign in with Google
-          </a>
-        )}
-        {!isMenu ? (
-          <Link to="/menu" className="chrome-link">
-            menu
-          </Link>
-        ) : null}
-      </div>
-    </header>
+      </footer>
+    </>
   );
 }
