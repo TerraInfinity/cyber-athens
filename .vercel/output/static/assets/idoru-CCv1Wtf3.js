@@ -1,1 +1,0 @@
-import{t as e}from"./idoru-room-BNf_sSXl.js";var t=e;export{t as component};

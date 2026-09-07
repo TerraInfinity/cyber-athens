@@ -1,8 +1,8 @@
-import { a as SESSION_COOKIE, c as publicOriginFromHost, l as safeRelativePath, s as parseSsoUser } from "./paths-ThGtzkws.mjs";
-import { expireNextHeader, expireSessionHeader, nextCookieHeader, readCookie, requestHost, sessionCookieHeader } from "./cookie-CnmFImgt.mjs";
+import { a as SESSION_COOKIE, c as parseSsoUser, l as publicOriginFromHost, u as safeRelativePath } from "./paths-ha5cT_AM.mjs";
+import { expireNextHeader, expireSessionHeader, nextCookieHeader, readCookie, requestHost, sessionCookieHeader } from "./cookie-1K3EhEM-.mjs";
 import { n as jwtVerify, t as SignJWT } from "../_libs/jose.mjs";
 import { randomBytes } from "node:crypto";
-//#region node_modules/.nitro/vite/services/ssr/assets/session.server-CKci883V.js
+//#region node_modules/.nitro/vite/services/ssr/assets/session.server-0AAMWT2f.js
 var SESSION_TTL = "30d";
 var REDEEM_PATHS = ["/api/sso/redeem", "/api/sso/exchange"];
 function hubOrigin() {

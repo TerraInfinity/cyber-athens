@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { LogIn, LogOut } from "lucide-react";
-import { HUB_PUBLIC, RADIO_PUBLIC } from "@/lib/sso/paths";
+import { HUB_PUBLIC, RADIO_PUBLIC, WIKI_PUBLIC } from "@/lib/sso/paths";
 import { useSsoState } from "@/lib/sso/context";
 import { useRoom } from "@/lib/use-host";
 
@@ -51,12 +51,17 @@ export function SiteChrome() {
         </div>
       </header>
       <footer className="site-foot">
-        <a href={HUB_PUBLIC} rel="noreferrer">
-          Terrainfinity
+        <a href={WIKI_PUBLIC} rel="noreferrer">
+          Wiki
         </a>
-        <a href={RADIO_PUBLIC} rel="noreferrer">
-          Radio
-        </a>
+        <span className="site-foot-right">
+          <a href={HUB_PUBLIC} rel="noreferrer">
+            Terrainfinity
+          </a>
+          <a href={RADIO_PUBLIC} rel="noreferrer">
+            Radio
+          </a>
+        </span>
       </footer>
     </>
   );

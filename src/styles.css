@@ -146,10 +146,17 @@ body {
   bottom: 0;
   left: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 1.15rem;
   padding: 0.65rem 1rem;
+}
+
+.site-foot-right {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
 }
 
 .site-foot a {
@@ -675,7 +682,7 @@ body {
   z-index: 4;
   pointer-events: auto;
   position: fixed;
-  bottom: 1rem;
+  bottom: 3.4rem;
   left: 1rem;
   width: 2.75rem;
   height: 2.75rem;

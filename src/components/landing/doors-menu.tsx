@@ -1,12 +1,16 @@
 import { Link } from "@tanstack/react-router";
+import { MEDIA_EMPIRE_PUBLIC } from "@/lib/hosts";
+import { useMediaEmpireHref } from "@/lib/use-host";
 
 export function DoorsMenu() {
+  const empireHref = useMediaEmpireHref();
+
   return (
     <main className="menu-body">
       <nav className="menu-doors" aria-label="Doors">
-        <Link className="menu-door" to="/media-empire">
+        <a className="menu-door" href={empireHref || MEDIA_EMPIRE_PUBLIC}>
           Media Empire
-        </Link>
+        </a>
         <a
           className="menu-door"
           href="https://c.terrainfinity.ca"

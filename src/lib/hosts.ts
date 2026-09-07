@@ -1,6 +1,6 @@
 export type RoomId = "landing" | "media-empire" | "idoru";
 
-export const MEDIA_EMPIRE_PUBLIC = "https://media-empire.cyber.ca";
+export const MEDIA_EMPIRE_PUBLIC = "https://media-empire.cyber-athens.ca";
 export const HALL_PATH = "/media-empire";
 export const IDORU_PATH = "/idoru";
 export const LANDING_PUBLIC = "https://cyber-athens.ca";
@@ -69,8 +69,7 @@ export function resolveRoom(host: string): RoomId {
 
 export function mediaEmpireHref(host: string): string {
   if (isMediaEmpireHost(host)) return "/";
-  if (isPublicLandingHost(host)) return MEDIA_EMPIRE_PUBLIC;
-  return HALL_PATH;
+  return MEDIA_EMPIRE_PUBLIC;
 }
 
 export function idoruHref(host: string): string {

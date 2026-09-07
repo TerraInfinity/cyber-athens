@@ -5,6 +5,7 @@ export const WWW_ORIGIN = "https://www.cyber-athens.ca";
 export const HUB_PUBLIC = "https://terrainfinity.ca";
 export const HUB_SSO_DEFAULT = "https://www.terrainfinity.ca";
 export const RADIO_PUBLIC = "https://radio.terrainfinity.ca";
+export const WIKI_PUBLIC = "https://wiki.cyber-athens.ca";
 export const IDORU_VIDEO_ID = "oCrhTU9HkVQ";
 
 export const SESSION_COOKIE = "ca_session";

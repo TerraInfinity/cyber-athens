@@ -1,16 +1,18 @@
 import { b as require_jsx_runtime, v as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/menu-hMQcPs_a.js
+import { n as useMediaEmpireHref } from "./router-BEHTREg9.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/menu-77DMANTP.js
 var import_jsx_runtime = require_jsx_runtime();
 function DoorsMenu() {
+	const empireHref = useMediaEmpireHref();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
 		className: "menu-body",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
 			className: "menu-doors",
 			"aria-label": "Doors",
 			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 					className: "menu-door",
-					to: "/media-empire",
+					href: empireHref || "https://media-empire.cyber-athens.ca",
 					children: "Media Empire"
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
