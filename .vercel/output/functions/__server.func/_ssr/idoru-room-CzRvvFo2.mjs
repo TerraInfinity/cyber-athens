@@ -2,7 +2,7 @@ import { i as __toESM } from "../_runtime.mjs";
 import { B as require_react, b as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as IDORU_VIDEO_ID } from "./paths-ha5cT_AM.mjs";
 import { n as Volume2, t as VolumeX } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/idoru-room-CC4MFfEa.js
+//#region node_modules/.nitro/vite/services/ssr/assets/idoru-room-CzRvvFo2.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var EMBED = `https://www.youtube-nocookie.com/embed/${IDORU_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${IDORU_VIDEO_ID}&controls=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&iv_load_policy=3&fs=0&cc_load_policy=0&enablejsapi=1`;
@@ -33,8 +33,35 @@ function IdoruRoom() {
 			setMuted(false);
 		} else {
 			ytCommand(frame, "mute");
+			ytCommand(frame, "playVideo");
 			setMuted(true);
 		}
+	}
+	function refuse(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			event.currentTarget.animate([
+				{ opacity: .48 },
+				{ opacity: .9 },
+				{ opacity: .48 }
+			], {
+				duration: 280,
+				easing: "ease"
+			});
+			return;
+		}
+		event.currentTarget.animate([
+			{ translate: "0px" },
+			{ translate: "-8px" },
+			{ translate: "8px" },
+			{ translate: "-5px" },
+			{ translate: "5px" },
+			{ translate: "0px" }
+		], {
+			duration: 420,
+			easing: "ease-in-out"
+		});
 	}
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
 		className: muted ? "room-body idoru-room" : "room-body idoru-room is-live",
@@ -61,6 +88,13 @@ function IdoruRoom() {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "idoru-veil" })
 				]
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+				type: "button",
+				className: "idoru-tap",
+				tabIndex: -1,
+				"aria-hidden": true,
+				onClick: toggleMute
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "idoru-fore",
 				children: [
@@ -72,15 +106,16 @@ function IdoruRoom() {
 						className: "idoru-copy",
 						children: "Let's play a beautiful Game..."
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "idoru-fixed",
-						children: "This is a fixed experience."
-					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
 						className: "idoru-proceed",
-						disabled: true,
+						"aria-disabled": "true",
+						onClick: refuse,
 						children: "Enter"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "idoru-fixed",
+						children: "This is a Fixed Experience"
 					})
 				]
 			}),

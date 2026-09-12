@@ -9,6 +9,7 @@ export function SiteChrome() {
   const room = useRoom();
   const isPoster = path === "/" && room === "landing";
   const isMenu = path === "/menu";
+  const isIdoru = path === "/idoru" || room === "idoru";
   const { user, isPending } = useSsoState();
   const next = `/api/sso/login?next=${encodeURIComponent(path || "/")}`;
 
@@ -50,19 +51,21 @@ export function SiteChrome() {
           ) : null}
         </div>
       </header>
-      <footer className="site-foot">
-        <a href={WIKI_PUBLIC} rel="noreferrer">
-          Wiki
-        </a>
-        <span className="site-foot-right">
-          <a href={HUB_PUBLIC} rel="noreferrer">
-            Terrainfinity
+      {isIdoru ? null : (
+        <footer className="site-foot">
+          <a href={WIKI_PUBLIC} rel="noreferrer">
+            Wiki
           </a>
-          <a href={RADIO_PUBLIC} rel="noreferrer">
-            Radio
-          </a>
-        </span>
-      </footer>
+          <span className="site-foot-right">
+            <a href={HUB_PUBLIC} rel="noreferrer">
+              Terrainfinity
+            </a>
+            <a href={RADIO_PUBLIC} rel="noreferrer">
+              Radio
+            </a>
+          </span>
+        </footer>
+      )}
     </>
   );
 }

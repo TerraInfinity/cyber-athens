@@ -558,6 +558,7 @@ body {
   isolation: isolate;
   overflow: hidden;
   justify-content: flex-end;
+  min-height: 100dvh;
   padding: 4.5rem 1.5rem 3.25rem;
 }
 
@@ -567,6 +568,8 @@ body {
   background: var(--color-page);
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -575,14 +578,12 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 177.78vh;
-  height: 56.25vw;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
+  width: max(100vw, calc(100dvh * 16 / 9));
+  height: max(100dvh, calc(100vw * 9 / 16));
+  transform: translate(-50%, -50%) scale(1.22);
   border: 0;
   object-fit: cover;
-  object-position: 32% 42%;
+  object-position: center;
   transition: filter 220ms ease;
 }
 
@@ -596,6 +597,21 @@ body {
     radial-gradient(58% 52% at 50% 42%, transparent 0%, #00000066 100%);
 }
 
+.idoru-tap {
+  z-index: 1;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  touch-action: manipulation;
+}
+
 .idoru-room.is-live .idoru-veil {
   opacity: 0.22;
 }
@@ -607,6 +623,7 @@ body {
 
 .idoru-fore {
   z-index: 2;
+  pointer-events: none;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -655,6 +672,7 @@ body {
 }
 
 .idoru-proceed {
+  pointer-events: auto;
   border: 3px solid var(--color-stone-edge);
   min-height: 3.1rem;
   color: var(--color-stone-ink);
@@ -670,7 +688,6 @@ body {
   box-shadow: inset 0 2px 0 #ffffff1a, inset 0 -12px 16px #0000008c, 0 8px 0 var(--color-mortar);
   opacity: 0.48;
   filter: grayscale(0.35);
-  pointer-events: none;
   border-radius: 0.2rem;
   margin-top: 0.55rem;
   padding: 0.75rem 1.7rem;
@@ -682,7 +699,7 @@ body {
   z-index: 4;
   pointer-events: auto;
   position: fixed;
-  bottom: 3.4rem;
+  bottom: 1rem;
   left: 1rem;
   width: 2.75rem;
   height: 2.75rem;
@@ -712,8 +729,8 @@ body {
 }
 
 .idoru-copy { animation-delay: 90ms; }
-.idoru-fixed { animation-delay: 160ms; }
-.idoru-proceed { animation-delay: 230ms; }
+.idoru-proceed { animation-delay: 160ms; }
+.idoru-fixed { animation-delay: 230ms; }
 
 @keyframes ca-scramble {
   0% { clip-path: inset(0); }
@@ -751,7 +768,22 @@ body {
     padding-left: 0.22em;
     font-size: clamp(1.85rem, 11vw, 2.6rem);
   }
-  .idoru-room { padding-bottom: 6.25rem; }
+  .idoru-room { padding-bottom: 3.25rem; }
+}
+
+@media (orientation: portrait) {
+  .idoru-still,
+  .idoru-loop {
+    top: 50%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: calc(100vw * 9 / 16);
+    aspect-ratio: 16 / 9;
+    transform: translateY(-50%);
+    object-fit: contain;
+    object-position: center;
+  }
 }
 
 @media only screen and (width <= 560px) {
@@ -769,10 +801,6 @@ body {
   .me-gate {
     background-image: url("/media-empire-gate-portrait.jpg");
     background-position: top;
-  }
-  .idoru-still,
-  .idoru-loop {
-    left: 36%;
   }
   .idoru-veil {
     background:

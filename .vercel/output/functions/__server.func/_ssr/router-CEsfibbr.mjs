@@ -4,7 +4,7 @@ import { a as getRequest, i as getServerFnById, n as createServerFn, o as __expo
 import { i as RADIO_PUBLIC, o as WIKI_PUBLIC, t as HUB_PUBLIC } from "./paths-ha5cT_AM.mjs";
 import { a as LogIn, i as LogOut, r as TriangleAlert } from "../_libs/lucide-react.mjs";
 import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-BEHTREg9.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-CEsfibbr.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function AppErrorComponent({ error }) {
@@ -388,6 +388,7 @@ function SiteChrome() {
 	const room = useRoom();
 	const isPoster = path === "/" && room === "landing";
 	const isMenu = path === "/menu";
+	const isIdoru = path === "/idoru" || room === "idoru";
 	const { user, isPending } = useSsoState();
 	const next = `/api/sso/login?next=${encodeURIComponent(path || "/")}`;
 	if (isPoster) return null;
@@ -442,7 +443,7 @@ function SiteChrome() {
 				children: "menu"
 			}) : null]
 		})]
-	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("footer", {
+	}), isIdoru ? null : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("footer", {
 		className: "site-foot",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 			href: WIKI_PUBLIC,
@@ -462,7 +463,7 @@ function SiteChrome() {
 		})]
 	})] });
 }
-var styles_default = "/assets/styles-BKIlkAar.css";
+var styles_default = "/assets/styles-DLmOo2mu.css";
 var APP_NAME = "Pulse of the Glåümosphere";
 var fetchSsoUser = createServerFn({ method: "GET" }).handler(createSsrRpc("d427fe6317f573fa38ddd6092319faa64007648068250a0fe0f7a20788000b7e"));
 var Route$10 = createRootRoute({
@@ -530,7 +531,7 @@ function RootDocument() {
 		})]
 	});
 }
-var $$splitComponentImporter$3 = () => import("./routes-pqNtYvcO.mjs");
+var $$splitComponentImporter$3 = () => import("./routes-DFp1SwDV.mjs");
 var Route$9 = createFileRoute("/")({
 	loader: () => ({ host: readHostNow() }),
 	head: ({ loaderData }) => {
@@ -541,7 +542,7 @@ var Route$9 = createFileRoute("/")({
 	},
 	component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-var $$splitComponentImporter$2 = () => import("./idoru-B2UcEz7H.mjs");
+var $$splitComponentImporter$2 = () => import("./idoru-BhbMp8iA.mjs");
 var Route$8 = createFileRoute("/idoru")({
 	head: () => ({ meta: [{ title: "IDORU" }, {
 		name: "description",
@@ -559,12 +560,12 @@ var Route$7 = createFileRoute("/logout")({ server: { handlers: {
 		return logoutRedirect(request);
 	}
 } } });
-var $$splitComponentImporter$1 = () => import("./media-empire-DUn8uBpj.mjs");
+var $$splitComponentImporter$1 = () => import("./media-empire-D4HEQhEy.mjs");
 var Route$6 = createFileRoute("/media-empire")({
 	head: () => ({ meta: [{ title: "Media Empire" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./menu-77DMANTP.mjs");
+var $$splitComponentImporter = () => import("./menu-BIlwYk5M.mjs");
 var Route$5 = createFileRoute("/menu")({
 	head: () => ({ meta: [{ title: "Menu — Pulse of the Glåümosphere" }] }),
 	component: lazyRouteComponent($$splitComponentImporter, "component")

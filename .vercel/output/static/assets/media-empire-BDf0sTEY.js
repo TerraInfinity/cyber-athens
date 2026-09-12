@@ -1,0 +1,1 @@
+import{c as e}from"./index-c-bTKxb8.js";import{t}from"./media-empire-gate-BqnkkYDJ.js";var n=e();function r(){return(0,n.jsx)(`main`,{className:`room-body me-room`,children:(0,n.jsx)(t,{})})}export{r as component};

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { IDORU_VIDEO_ID } from "@/lib/sso/paths";
 
@@ -37,9 +37,36 @@ export function IdoruRoom() {
       setMuted(false);
     } else {
       ytCommand(frame, "mute");
+      ytCommand(frame, "playVideo");
       setMuted(true);
     }
   }
+
+  function refuse(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      event.currentTarget.animate(
+        [{ opacity: 0.48 }, { opacity: 0.9 }, { opacity: 0.48 }],
+        { duration: 280, easing: "ease" },
+      );
+      return;
+    }
+    event.currentTarget.animate(
+      [
+        { translate: "0px" },
+        { translate: "-8px" },
+        { translate: "8px" },
+        { translate: "-5px" },
+        { translate: "5px" },
+        { translate: "0px" },
+      ],
+      { duration: 420, easing: "ease-in-out" },
+    );
+  }
+
+  const muteLabel = muted ? "Unmute" : "Mute";
 
   return (
     <main className={muted ? "room-body idoru-room" : "room-body idoru-room is-live"}>
@@ -63,19 +90,31 @@ export function IdoruRoom() {
         ) : null}
         <div className="idoru-veil" />
       </div>
+      <button
+        type="button"
+        className="idoru-tap"
+        tabIndex={-1}
+        aria-hidden
+        onClick={toggleMute}
+      />
       <div className="idoru-fore">
         <h1 className="idoru-title">IDORU</h1>
         <p className="idoru-copy">Let's play a beautiful Game...</p>
-        <p className="idoru-fixed">This is a fixed experience.</p>
-        <button type="button" className="idoru-proceed" disabled>
+        <button
+          type="button"
+          className="idoru-proceed"
+          aria-disabled="true"
+          onClick={refuse}
+        >
           Enter
         </button>
+        <p className="idoru-fixed">This is a Fixed Experience</p>
       </div>
       <button
         type="button"
         className="idoru-mute"
         aria-pressed={!muted}
-        aria-label={muted ? "Unmute" : "Mute"}
+        aria-label={muteLabel}
         onClick={toggleMute}
       >
         {muted ? (
