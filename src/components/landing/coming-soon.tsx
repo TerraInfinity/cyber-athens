@@ -2,9 +2,8 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link } from "@tanstack/react-router";
 
 const OPERA = "https://opera.cyber-athens.ca";
-const ENTER = "Enter";
 const WHISPER = "We can play a beautiful game";
-const WHISPER_MS = 1400;
+const WHISPER_MS = 1600;
 
 const BOOT: Array<[number, number]> = [
   [6, 160],
@@ -43,10 +42,50 @@ function signalFor(pct: number) {
   return "ALIGN";
 }
 
-function EnterGate() {
-  const [phase, setPhase] = useState<"idle" | "glitch" | "load" | "hold">("idle");
-  const [label, setLabel] = useState(ENTER);
+function WhisperLine() {
+  const [on, setOn] = useState(false);
   const [glitch, setGlitch] = useState(false);
+
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let show = 0;
+    let hide = 0;
+    const loop = () => {
+      show = window.setTimeout(() => {
+        setOn(true);
+        if (!reduce) setGlitch(true);
+        hide = window.setTimeout(() => {
+          setOn(false);
+          setGlitch(false);
+          loop();
+        }, WHISPER_MS);
+      }, nextDelay());
+    };
+    loop();
+    return () => {
+      window.clearTimeout(show);
+      window.clearTimeout(hide);
+    };
+  }, []);
+
+  return (
+    <p
+      className={
+        glitch
+          ? "door-whisper coming-title is-whisper is-glitch"
+          : on
+            ? "door-whisper coming-title is-whisper"
+            : "door-whisper coming-title is-whisper is-off"
+      }
+      aria-live="polite"
+    >
+      {WHISPER}
+    </p>
+  );
+}
+
+function DoorPair() {
+  const [phase, setPhase] = useState<"idle" | "glitch" | "load" | "hold">("idle");
   const [pct, setPct] = useState(0);
   const started = useRef(false);
   const timers = useRef<number[]>([]);
@@ -56,31 +95,6 @@ function EnterGate() {
       for (const id of timers.current) window.clearTimeout(id);
     };
   }, []);
-
-  useEffect(() => {
-    if (phase !== "idle") return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let whisper = 0;
-    let reset = 0;
-    const loop = () => {
-      whisper = window.setTimeout(() => {
-        if (started.current) return;
-        setLabel(WHISPER);
-        if (!reduce) setGlitch(true);
-        reset = window.setTimeout(() => {
-          if (started.current) return;
-          setLabel(ENTER);
-          setGlitch(false);
-          loop();
-        }, WHISPER_MS);
-      }, nextDelay());
-    };
-    loop();
-    return () => {
-      window.clearTimeout(whisper);
-      window.clearTimeout(reset);
-    };
-  }, [phase]);
 
   function boot(reduce: boolean) {
     const steps = reduce ? ([[42, 280]] as Array<[number, number]>) : BOOT;
@@ -108,11 +122,8 @@ function EnterGate() {
     event.preventDefault();
     started.current = true;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setLabel(ENTER);
-    setGlitch(!reduce);
     setPhase("glitch");
     const id = window.setTimeout(() => {
-      setGlitch(false);
       setPhase("load");
       setPct(0);
       boot(reduce);
@@ -121,24 +132,23 @@ function EnterGate() {
   }
 
   const booting = phase === "load" || phase === "hold";
-  const titleClass = [
-    "cmp-title",
-    "coming-title",
-    "animated",
-    glitch ? "is-glitch" : "",
-    label === WHISPER ? "is-whisper" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
 
   return (
-    <a
-      className={booting ? "enter-gate is-boot" : "enter-gate"}
-      href={OPERA}
-      aria-label={booting ? `Entering, ${pct} percent` : "Enter"}
-      aria-busy={booting}
-      onClick={begin}
-    >
+    <div className="door-stack">
+      <div className="door-row">
+        <a
+          className={phase === "glitch" ? "enter-gate is-glitch" : "enter-gate"}
+          href={OPERA}
+          aria-label={booting ? `Entering opera, ${pct} percent` : "Enter Opera"}
+          aria-busy={booting}
+          onClick={begin}
+        >
+          <span className="door-label">Enter Opera</span>
+        </a>
+        <Link to="/menu" className="enter-gate enter-menu">
+          <span className="door-label">Enter Menu</span>
+        </Link>
+      </div>
       {booting ? (
         <span className="boot">
           <span className="boot-meta">
@@ -152,9 +162,9 @@ function EnterGate() {
           </span>
         </span>
       ) : (
-        <span className={titleClass}>{label}</span>
+        <WhisperLine />
       )}
-    </a>
+    </div>
   );
 }
 
@@ -175,7 +185,7 @@ export function ComingSoon() {
               height={544}
             />
           </div>
-          <EnterGate />
+          <DoorPair />
         </div>
       </div>
       <a

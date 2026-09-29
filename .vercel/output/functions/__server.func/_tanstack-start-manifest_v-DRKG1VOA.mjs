@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-1hdipn_G.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-DRKG1VOA.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "/workspace/src/routes/__root.tsx",
@@ -14,36 +14,36 @@ var tsrStartManifest = () => ({ routes: {
 			"/api/sso/profile",
 			"/api/sso/session"
 		],
-		preloads: ["/assets/index-CGifBAd-.js"],
+		preloads: ["/assets/index-CyTYllE6.js"],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-CGifBAd-.js"
+			src: "/assets/index-CyTYllE6.js"
 		} }]
 	},
 	"/": {
 		filePath: "/workspace/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-D0NxZt08.js",
-			"/assets/idoru-room-D9ajUpiB.js",
-			"/assets/media-empire-gate-CAOx9Vwc.js"
+			"/assets/routes-CvwB9LZm.js",
+			"/assets/idoru-room-r_OD1_Vd.js",
+			"/assets/media-empire-gate-D257Sn46.js"
 		]
 	},
 	"/idoru": {
 		filePath: "/workspace/src/routes/idoru.tsx",
 		children: void 0,
-		preloads: ["/assets/idoru-Ddn7k-Ye.js", "/assets/idoru-room-D9ajUpiB.js"]
+		preloads: ["/assets/idoru-C68u7TBn.js", "/assets/idoru-room-r_OD1_Vd.js"]
 	},
 	"/media-empire": {
 		filePath: "/workspace/src/routes/media-empire.tsx",
 		children: void 0,
-		preloads: ["/assets/media-empire-M1Zc4J_8.js", "/assets/media-empire-gate-CAOx9Vwc.js"]
+		preloads: ["/assets/media-empire-DXWLt0D_.js", "/assets/media-empire-gate-D257Sn46.js"]
 	},
 	"/menu": {
 		filePath: "/workspace/src/routes/menu.tsx",
 		children: void 0,
-		preloads: ["/assets/menu-C-W46UDS.js"]
+		preloads: ["/assets/menu-BX_yedhm.js"]
 	}
 } });
 //#endregion

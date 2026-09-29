@@ -1,0 +1,1 @@
+import{t as e}from"./idoru-room-r_OD1_Vd.js";var t=e;export{t as component};
