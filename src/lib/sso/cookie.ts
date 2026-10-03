@@ -1,4 +1,4 @@
-import { NEXT_COOKIE, SESSION_COOKIE, isCyberAthensHost } from "./paths";
+import { NEXT_COOKIE, QUIET_COOKIE, SESSION_COOKIE, isCyberAthensHost } from "./paths.ts";
 
 export type CookieOptions = {
   maxAge: number;
@@ -93,4 +93,17 @@ export function expireSessionHeader(request: Request): string {
 
 export function expireNextHeader(request: Request): string {
   return expireCookie(NEXT_COOKIE, request);
+}
+
+const QUIET_MAX_AGE = 60 * 60 * 24 * 365;
+
+export function quietCookieHeader(request: Request): string {
+  return serializeCookie(QUIET_COOKIE, "1", {
+    ...sessionCookieOptions(request),
+    maxAge: QUIET_MAX_AGE,
+  });
+}
+
+export function expireQuietHeader(request: Request): string {
+  return expireCookie(QUIET_COOKIE, request);
 }

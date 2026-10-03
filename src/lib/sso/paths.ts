@@ -10,6 +10,7 @@ export const IDORU_VIDEO_ID = "oCrhTU9HkVQ";
 
 export const SESSION_COOKIE = "ca_session";
 export const NEXT_COOKIE = "ca_sso_next";
+export const QUIET_COOKIE = "ca_sso_quiet";
 
 const ALLOWED_NEXT = new Set(["/", "/menu", "/media-empire", "/idoru"]);
 
