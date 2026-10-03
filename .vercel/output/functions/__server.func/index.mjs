@@ -1,5 +1,7 @@
 globalThis.__nitro_main__ = import.meta.url;
 import { i as toEventHandler, n as HTTPError, o as NodeResponse, r as defineLazyEventHandler, t as H3Core } from "./_libs/h3+rou3+srvx.mjs";
+import { n as jwtVerify } from "./_libs/jose.mjs";
+import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 //#region node_modules/nitro/dist/runtime/internal/route-rules.mjs
@@ -152,10 +154,6 @@ function readGrokProjectId() {
 	const fromProcess = typeof process !== "undefined" ? process.env?.VITE_PROJECT_ID : "";
 	return String(fromProcess ?? "").trim();
 }
-function readGrokExtensionsEnabled() {
-	const fromProcess = typeof process !== "undefined" ? process.env?.VITE_GROK_EXTENSIONS : "";
-	return String(fromProcess ?? "").trim() !== "0";
-}
 function readXCreator() {
 	const fromProcess = typeof process !== "undefined" ? process.env?.X_CREATOR : "";
 	return String(fromProcess ?? "").trim();
@@ -175,7 +173,6 @@ function grokExtensionsHeadTags(projectId = readGrokProjectId()) {
 	const id = escapeHtml(projectId);
 	const tags = [];
 	if (projectId) tags.push(`<meta name="grok-project-id" content="${id}">`);
-	if (!readGrokExtensionsEnabled()) return tags;
 	tags.push(`<script src="${GROK_EXTENSIONS_SCRIPT_SRC}"${projectId ? ` data-project-id="${id}"` : ""} defer><\/script>`);
 	return tags;
 }
@@ -275,9 +272,6 @@ function grokOgHeadTags({ host = "", appName = DEFAULT_APP_NAME, site = {}, docu
 	}
 	return tags;
 }
-function stripGrokExtensionsScript(html) {
-	return String(html).replace(/<script\b[^>]*\bsrc\s*=\s*["'][^"']*\/grok-app-builder\/extensions\.js[^"']*["'][^>]*>\s*<\/script>/gi, "");
-}
 function stripShareMetaTags(html) {
 	return String(html).replace(/<meta\b[^>]*>/gi, (tag) => {
 		const attrs = [...tag.matchAll(/\b(?:property|name)\s*=\s*["']([^"']+)["']/gi)];
@@ -313,7 +307,6 @@ function injectGrokPwaHead(html, ctx = {}) {
 	const documentTitle = titleFromDocument(html);
 	const appName = resolveOgTitle(site, ctx.appName ?? "Grok App", host, documentTitle);
 	let next = stripShareMetaTags(html);
-	if (!readGrokExtensionsEnabled()) next = stripGrokExtensionsScript(next);
 	const missing = grokPwaHeadTags(appName).filter(([key]) => {
 		if (key === "manifest") return !next.includes("href=\"/__grok/manifest.webmanifest\"");
 		if (key === "apple-touch-icon") return !next.includes("href=\"/__grok/icon-180.png\"");
@@ -326,7 +319,7 @@ function injectGrokPwaHead(html, ctx = {}) {
 		documentTitle,
 		cwd
 	}).join(""));
-	if (readGrokExtensionsEnabled() && !next.includes("/grok-app-builder/extensions.js")) missing.push(...grokExtensionsHeadTags(projectId));
+	if (!next.includes("/grok-app-builder/extensions.js")) missing.push(...grokExtensionsHeadTags(projectId));
 	else if (projectId && !next.includes("name=\"grok-project-id\"")) missing.push(`<meta name="grok-project-id" content="${escapeHtml(projectId)}">`);
 	if (projectId && !next.includes("property=\"grok:app_id\"") && !next.includes("property='grok:app_id'")) missing.push(`<meta property="grok:app_id" content="${escapeHtml(projectId)}">`);
 	const creatorTags = grokXCreatorHeadTags(creator, creatorId);
@@ -402,7 +395,7 @@ function createHeadInjector(ctx = {}) {
 *   This must be a middleware transforming `next()`: h3 discards the `response`
 *   runtime hook's return value, and `render:html` does not exist in Nitro v3.
 */
-function requestHost(event) {
+function requestHost$1(event) {
 	return event.req.headers.get("x-forwarded-host") ?? event.req.headers.get("host") ?? event.url.host;
 }
 function injectHeadStreaming(response, host) {
@@ -430,13 +423,13 @@ async function grokPwaMiddleware(event, next) {
 	if ((event.req.method ?? "GET").toUpperCase() !== "GET") return next();
 	const path = event.url.pathname;
 	const urlWithQuery = path + event.url.search;
-	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost(event)), { headers: {
+	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost$1(event)), { headers: {
 		"content-type": "application/manifest+json; charset=utf-8",
 		"cache-control": "no-cache"
 	} });
 	if (isInstallQuery(urlWithQuery) && isDocumentPath(path) && acceptsHtml(event.req.headers.get("accept"))) {
 		const html = renderInstallPageHtml(install_page_default, {
-			host: requestHost(event),
+			host: requestHost$1(event),
 			url: urlWithQuery
 		});
 		return new Response(html, { headers: {
@@ -446,8 +439,215 @@ async function grokPwaMiddleware(event, next) {
 	}
 	if (!isDocumentPath(path)) return next();
 	const result = await next();
-	if (result instanceof Response && result.body && String(result.headers.get("content-type") ?? "").includes("text/html") && !result.headers.get("content-encoding")) return injectHeadStreaming(result, requestHost(event));
+	if (result instanceof Response && result.body && String(result.headers.get("content-type") ?? "").includes("text/html") && !result.headers.get("content-encoding")) return injectHeadStreaming(result, requestHost$1(event));
 	return result;
+}
+//#endregion
+//#region src/lib/sso/paths.ts
+var APEX_ORIGIN = "https://cyber-athens.ca";
+var WWW_ORIGIN = "https://www.cyber-athens.ca";
+var SESSION_COOKIE = "ca_session";
+var QUIET_COOKIE = "ca_sso_quiet";
+var ALLOWED_NEXT = /* @__PURE__ */ new Set([
+	"/",
+	"/menu",
+	"/media-empire",
+	"/idoru"
+]);
+function stripPort(host) {
+	return host.trim().toLowerCase().replace(/:\d+$/, "");
+}
+function publicOriginFromHost(host) {
+	return stripPort(host) === "www.cyber-athens.ca" ? WWW_ORIGIN : APEX_ORIGIN;
+}
+function isCyberAthensHost(host) {
+	const h = stripPort(host);
+	return h === "cyber-athens.ca" || h === "www.cyber-athens.ca";
+}
+function safeRelativePath(raw) {
+	if (!raw) return "/";
+	let value = raw.trim();
+	try {
+		value = decodeURIComponent(value);
+	} catch {
+		return "/";
+	}
+	if (!value.startsWith("/")) return "/";
+	if (value.startsWith("//") || value.startsWith("/\\")) return "/";
+	if (value.includes("://") || value.includes("\\")) return "/";
+	const pathOnly = value.split("?")[0]?.split("#")[0] ?? "/";
+	const normalized = pathOnly.length > 1 ? pathOnly.replace(/\/+$/, "") : pathOnly;
+	return ALLOWED_NEXT.has(normalized) ? normalized : "/";
+}
+function parseSsoUser(data) {
+	if (!data || typeof data !== "object") return null;
+	const root = data;
+	const raw = root.user && typeof root.user === "object" ? root.user : root;
+	const id = stringish(raw.id ?? raw.sub ?? raw.user_id);
+	const email = stringish(raw.email ?? raw.primaryEmail);
+	if (!id && !email) return null;
+	return {
+		id: id || email || "",
+		email,
+		name: stringish(raw.name ?? raw.displayName),
+		image: stringish(raw.image ?? raw.picture ?? raw.avatar ?? raw.profileImageUrl),
+		googleSub: stringish(raw.google_sub ?? raw.googleSub ?? raw.sub)
+	};
+}
+function stringish(value) {
+	if (typeof value !== "string") return null;
+	const trimmed = value.trim();
+	return trimmed ? trimmed : null;
+}
+//#endregion
+//#region src/lib/sso/cookie.ts
+function requestHost(request) {
+	return ((request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "").split(",")[0]?.trim() ?? "").toLowerCase();
+}
+function requestSecure(request) {
+	return (request.headers.get("x-forwarded-proto") ?? new URL(request.url).protocol.replace(":", "")).toLowerCase() === "https";
+}
+function sessionCookieOptions(request) {
+	const host = requestHost(request);
+	const options = {
+		maxAge: 2592e3,
+		httpOnly: true,
+		secure: requestSecure(request) || isCyberAthensHost(host),
+		sameSite: "Lax",
+		path: "/"
+	};
+	if (isCyberAthensHost(host)) options.domain = ".cyber-athens.ca";
+	return options;
+}
+function serializeCookie(name, value, options) {
+	const parts = [`${name}=${encodeURIComponent(value)}`, `Path=${options.path}`];
+	parts.push(`Max-Age=${options.maxAge}`);
+	if (options.domain) parts.push(`Domain=${options.domain}`);
+	if (options.httpOnly) parts.push("HttpOnly");
+	if (options.secure) parts.push("Secure");
+	parts.push(`SameSite=${options.sameSite}`);
+	return parts.join("; ");
+}
+function readCookie(request, name) {
+	const header = request.headers.get("cookie");
+	if (!header) return null;
+	for (const part of header.split(";")) {
+		const [rawName, ...rest] = part.split("=");
+		if (rawName?.trim() === name) try {
+			return decodeURIComponent(rest.join("=").trim());
+		} catch {
+			return rest.join("=").trim();
+		}
+	}
+	return null;
+}
+var QUIET_MAX_AGE = 31536e3;
+function quietCookieHeader(request) {
+	return serializeCookie(QUIET_COOKIE, "1", {
+		...sessionCookieOptions(request),
+		maxAge: QUIET_MAX_AGE
+	});
+}
+//#endregion
+//#region src/lib/sso/session.server.ts
+function hubOrigin() {
+	return (process.env.SSO_HUB?.trim() || "https://www.terrainfinity.ca").replace(/\/$/, "");
+}
+function secretKey() {
+	const fromEnv = process.env.AUTH_SECRET?.trim() || process.env.BETTER_AUTH_SECRET?.trim();
+	if (fromEnv) return new TextEncoder().encode(fromEnv);
+	const g = globalThis;
+	g.__caSsoSecret ??= randomBytes(32).toString("hex");
+	return new TextEncoder().encode(g.__caSsoSecret);
+}
+function thisOrigin(request) {
+	return publicOriginFromHost(requestHost(request));
+}
+async function readSessionUser(request) {
+	const token = readCookie(request, SESSION_COOKIE);
+	if (!token) return null;
+	try {
+		const { payload } = await jwtVerify(token, secretKey(), { algorithms: ["HS256"] });
+		return parseSsoUser({
+			id: payload.sub,
+			email: payload.email,
+			name: payload.name,
+			image: payload.image,
+			google_sub: payload.google_sub
+		});
+	} catch {
+		return null;
+	}
+}
+function consumeReturnTo(origin, next, quiet) {
+	const base = `${origin}/api/sso/consume?next=${next}`;
+	return quiet ? `${base}&quiet=1` : base;
+}
+/** Hub /api/sso/start URL. quiet=1 is only for the silent one-shot, never Sign in. */
+function ssoStartUrl(request, nextParam, options) {
+	const quiet = options?.quiet === true;
+	const next = safeRelativePath(nextParam || new URL(request.url).searchParams.get("next"));
+	const origin = thisOrigin(request);
+	const start = new URL("/api/sso/start", hubOrigin());
+	if (quiet) start.searchParams.set("quiet", "1");
+	start.searchParams.set("returnTo", consumeReturnTo(origin, next, quiet));
+	return start.toString();
+}
+function quietWarmupStartUrl(request, nextParam) {
+	return ssoStartUrl(request, nextParam, { quiet: true });
+}
+function quietWarmupRedirect(request, nextParam) {
+	const headers = new Headers({
+		Location: quietWarmupStartUrl(request, nextParam),
+		"Cache-Control": "no-store"
+	});
+	headers.append("Set-Cookie", quietCookieHeader(request));
+	return new Response(null, {
+		status: 302,
+		headers
+	});
+}
+//#endregion
+//#region server/middleware/sso-quiet.ts
+/**
+* Dark silent SSO one-shot. No-op unless SSO_QUIET_WARMUP === "1".
+* Once per browser, a document navigation on www.cyber-athens.ca with no
+* session is sent to the hub with quiet=1. The ca_sso_quiet cookie stops a loop.
+*/
+var WWW_HOST = "www.cyber-athens.ca";
+function navigationHost(headers) {
+	return stripPort((headers.get("x-forwarded-host") ?? headers.get("host") ?? "").split(",")[0]?.trim() ?? "");
+}
+function isStaticAsset(pathname) {
+	if (pathname.startsWith("/assets/") || pathname.startsWith("/__grok/")) return true;
+	return (pathname.split("/").pop() ?? "").includes(".");
+}
+function isSsoApi(pathname) {
+	return pathname === "/api/sso" || pathname.startsWith("/api/sso/");
+}
+function isDocumentNavigation(headers) {
+	const dest = headers.get("sec-fetch-dest");
+	if (dest !== null && dest.toLowerCase() !== "document") return false;
+	const accept = headers.get("accept");
+	if (accept !== null && !accept.includes("text/html") && !accept.includes("*/*")) return false;
+	return true;
+}
+async function ssoQuietMiddleware(event, next) {
+	if (process.env.SSO_QUIET_WARMUP !== "1") return next();
+	const method = (event.req.method ?? "GET").toUpperCase();
+	if (method !== "GET" && method !== "HEAD") return next();
+	const headers = event.req.headers;
+	if (navigationHost(headers) !== WWW_HOST) return next();
+	const pathname = event.url.pathname;
+	if (isSsoApi(pathname) || isStaticAsset(pathname)) return next();
+	if (!isDocumentNavigation(headers)) return next();
+	const request = new Request(event.url.href, {
+		method,
+		headers
+	});
+	if (readCookie(request, "ca_sso_quiet") != null) return next();
+	if (await readSessionUser(request)) return next();
+	return quietWarmupRedirect(request, pathname);
 }
 //#endregion
 //#region #nitro/virtual/routing
@@ -471,11 +671,11 @@ var findRouteRules = /* @__PURE__ */ (() => {
 		return r;
 	};
 })();
-var _lazy_IO091Z = defineLazyEventHandler(() => import("./_chunks/ssr-renderer.mjs"));
+var _lazy_Wa8vQM = defineLazyEventHandler(() => import("./_chunks/ssr-renderer.mjs"));
 var findRoute = /* @__PURE__ */ (() => {
 	const data = {
 		route: "/**",
-		handler: _lazy_IO091Z
+		handler: _lazy_Wa8vQM
 	};
 	return ((_m, p) => {
 		return {
@@ -484,7 +684,7 @@ var findRoute = /* @__PURE__ */ (() => {
 		};
 	});
 })();
-var globalMiddleware = [toEventHandler(grokPwaMiddleware)].filter(Boolean);
+var globalMiddleware = [toEventHandler(grokPwaMiddleware), toEventHandler(ssoQuietMiddleware)].filter(Boolean);
 //#endregion
 //#region node_modules/nitro/dist/runtime/internal/error/prod.mjs
 var errorHandler = (error, event) => {

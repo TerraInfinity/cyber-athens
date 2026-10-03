@@ -1,6 +1,6 @@
-import { b as require_jsx_runtime, v as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { n as useMediaEmpireHref } from "./router-Rwa2LVaB.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/menu-CTuxUmdK.js
+import { S as require_jsx_runtime, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
+import { n as useMediaEmpireHref } from "./router-CJda9EvC.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/menu-Dhy4wrCe.js
 var import_jsx_runtime = require_jsx_runtime();
 function DoorsMenu() {
 	const empireHref = useMediaEmpireHref();

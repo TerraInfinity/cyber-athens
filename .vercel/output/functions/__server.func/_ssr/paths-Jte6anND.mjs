@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/paths-ha5cT_AM.js
+//#region node_modules/.nitro/vite/services/ssr/assets/paths-Jte6anND.js
 var APEX_ORIGIN = "https://cyber-athens.ca";
 var WWW_ORIGIN = "https://www.cyber-athens.ca";
 var HUB_PUBLIC = "https://terrainfinity.ca";
@@ -7,6 +7,7 @@ var WIKI_PUBLIC = "https://wiki.cyber-athens.ca";
 var IDORU_VIDEO_ID = "oCrhTU9HkVQ";
 var SESSION_COOKIE = "ca_session";
 var NEXT_COOKIE = "ca_sso_next";
+var QUIET_COOKIE = "ca_sso_quiet";
 var ALLOWED_NEXT = /* @__PURE__ */ new Set([
 	"/",
 	"/menu",
@@ -59,4 +60,4 @@ function stringish(value) {
 	return trimmed ? trimmed : null;
 }
 //#endregion
-export { SESSION_COOKIE as a, parseSsoUser as c, RADIO_PUBLIC as i, publicOriginFromHost as l, IDORU_VIDEO_ID as n, WIKI_PUBLIC as o, NEXT_COOKIE as r, isCyberAthensHost as s, HUB_PUBLIC as t, safeRelativePath as u };
+export { RADIO_PUBLIC as a, isCyberAthensHost as c, safeRelativePath as d, QUIET_COOKIE as i, parseSsoUser as l, IDORU_VIDEO_ID as n, SESSION_COOKIE as o, NEXT_COOKIE as r, WIKI_PUBLIC as s, HUB_PUBLIC as t, publicOriginFromHost as u };

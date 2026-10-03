@@ -1,5 +1,5 @@
-import { a as SESSION_COOKIE, r as NEXT_COOKIE, s as isCyberAthensHost } from "./paths-ha5cT_AM.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/cookie-1K3EhEM-.js
+import { c as isCyberAthensHost, i as QUIET_COOKIE, o as SESSION_COOKIE, r as NEXT_COOKIE } from "./paths-Jte6anND.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/cookie-Bd3Io1d1.js
 function requestHost(request) {
 	return ((request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "").split(",")[0]?.trim() ?? "").toLowerCase();
 }
@@ -64,5 +64,8 @@ function expireSessionHeader(request) {
 function expireNextHeader(request) {
 	return expireCookie(NEXT_COOKIE, request);
 }
+function expireQuietHeader(request) {
+	return expireCookie(QUIET_COOKIE, request);
+}
 //#endregion
-export { expireNextHeader, expireSessionHeader, nextCookieHeader, readCookie, requestHost, sessionCookieHeader };
+export { expireNextHeader, expireQuietHeader, expireSessionHeader, nextCookieHeader, readCookie, requestHost, sessionCookieHeader };

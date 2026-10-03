@@ -1,0 +1,1 @@
+import{t as e}from"./idoru-room-BT65HMsn.js";var t=e;export{t as component};

@@ -1,8 +1,8 @@
-import { a as SESSION_COOKIE, c as parseSsoUser, l as publicOriginFromHost, u as safeRelativePath } from "./paths-ha5cT_AM.mjs";
-import { expireNextHeader, expireSessionHeader, nextCookieHeader, readCookie, requestHost, sessionCookieHeader } from "./cookie-1K3EhEM-.mjs";
 import { n as jwtVerify, t as SignJWT } from "../_libs/jose.mjs";
+import { d as safeRelativePath, l as parseSsoUser, o as SESSION_COOKIE, u as publicOriginFromHost } from "./paths-Jte6anND.mjs";
+import { expireNextHeader, expireQuietHeader, expireSessionHeader, nextCookieHeader, readCookie, requestHost, sessionCookieHeader } from "./cookie-Bd3Io1d1.mjs";
 import { randomBytes } from "node:crypto";
-//#region node_modules/.nitro/vite/services/ssr/assets/session.server-0AAMWT2f.js
+//#region node_modules/.nitro/vite/services/ssr/assets/session.server-DePeDf5e.js
 var SESSION_TTL = "30d";
 var REDEEM_PATHS = ["/api/sso/redeem", "/api/sso/exchange"];
 function hubOrigin() {
@@ -45,22 +45,43 @@ async function readSessionUser(request) {
 function intendedPath(request, nextParam) {
 	return safeRelativePath(nextParam || readCookie(request, "ca_sso_next"));
 }
-function consumeReturnTo(origin, next) {
-	return `${origin}/api/sso/consume?next=${next}`;
+function consumeReturnTo(origin, next, quiet) {
+	const base = `${origin}/api/sso/consume?next=${next}`;
+	return quiet ? `${base}&quiet=1` : base;
 }
-function loginRedirect(request, nextParam) {
+/** Hub /api/sso/start URL. quiet=1 is only for the silent one-shot, never Sign in. */
+function ssoStartUrl(request, nextParam, options) {
+	const quiet = options?.quiet === true;
 	const next = safeRelativePath(nextParam || new URL(request.url).searchParams.get("next"));
 	const origin = thisOrigin(request);
 	const start = new URL("/api/sso/start", hubOrigin());
-	start.searchParams.set("returnTo", consumeReturnTo(origin, next));
+	if (quiet) start.searchParams.set("quiet", "1");
+	start.searchParams.set("returnTo", consumeReturnTo(origin, next, quiet));
+	return start.toString();
+}
+function loginStartUrl(request, nextParam) {
+	return ssoStartUrl(request, nextParam);
+}
+function loginRedirect(request, nextParam) {
+	const next = safeRelativePath(nextParam || new URL(request.url).searchParams.get("next"));
 	const headers = new Headers({
-		Location: start.toString(),
+		Location: loginStartUrl(request, next),
 		"Cache-Control": "no-store"
 	});
 	headers.append("Set-Cookie", nextCookieHeader(request, next));
 	return new Response(null, {
 		status: 302,
 		headers
+	});
+}
+function quietConsumeFallback(request, nextParam) {
+	const next = intendedPath(request, nextParam);
+	return new Response(null, {
+		status: 302,
+		headers: {
+			Location: next,
+			"Cache-Control": "no-store"
+		}
 	});
 }
 async function redeemAtHub(code) {
@@ -151,6 +172,7 @@ function logoutRedirect(request) {
 	});
 	headers.append("Set-Cookie", expireSessionHeader(request));
 	headers.append("Set-Cookie", expireNextHeader(request));
+	headers.append("Set-Cookie", expireQuietHeader(request));
 	return new Response(null, {
 		status: 302,
 		headers
@@ -167,4 +189,4 @@ function escapeHtml(value) {
 	});
 }
 //#endregion
-export { consumeCode, loginRedirect, logoutRedirect, missingCodeResponse, readSessionUser, signSession };
+export { consumeCode, loginRedirect, logoutRedirect, missingCodeResponse, quietConsumeFallback, readSessionUser, signSession };
