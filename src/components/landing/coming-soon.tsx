@@ -211,6 +211,263 @@ function PosterDrift() {
   return <div ref={hold} hidden />;
 }
 
+type Mote = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  r: number;
+  a: number;
+  warm: boolean;
+  kind: 0 | 1 | 2;
+  ang: number;
+  orbit: number;
+  wobble: number;
+  twin: number;
+  glint: number;
+};
+
+function VoidDust() {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const sprite = document.createElement("canvas");
+    sprite.width = sprite.height = 32;
+    const sctx = sprite.getContext("2d");
+    if (!sctx) return;
+    const glow = sctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    glow.addColorStop(0, "rgba(255,255,255,0.9)");
+    glow.addColorStop(0.28, "rgba(255,255,255,0.22)");
+    glow.addColorStop(1, "rgba(255,255,255,0)");
+    sctx.fillStyle = glow;
+    sctx.beginPath();
+    sctx.arc(16, 16, 16, 0, Math.PI * 2);
+    sctx.fill();
+
+    let motes: Mote[] = [];
+    let w = 0;
+    let h = 0;
+    let dpr = 1;
+    let alive = true;
+    let raf = 0;
+    let last = performance.now();
+
+    const make = (kind: 0 | 1 | 2): Mote => {
+      const min = Math.min(w, h) || 1;
+      if (kind === 2) {
+        const ang = Math.random() * Math.PI * 2;
+        const orbit = min * (0.2 + Math.random() * 0.22);
+        return {
+          x: w * 0.5 + Math.cos(ang) * orbit,
+          y: h * 0.5 + Math.sin(ang) * orbit * 0.58,
+          vx: 0,
+          vy: 0,
+          r: 0.7 + Math.random() * 0.55,
+          a: 0.38 + Math.random() * 0.32,
+          warm: Math.random() < 0.18,
+          kind,
+          ang,
+          orbit,
+          wobble: Math.random(),
+          twin: 0,
+          glint: Math.random() * 26000,
+        };
+      }
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h * 0.84,
+        vx: (Math.random() - 0.5) * (kind ? 5 : 9),
+        vy: (Math.random() - 0.42) * (kind ? 3.5 : 6),
+        r: kind ? 3.4 + Math.random() * 4.2 : 0.85 + Math.random() * 1.05,
+        a: kind ? 0.12 + Math.random() * 0.1 : 0.32 + Math.random() * 0.4,
+        warm: Math.random() < (kind ? 0.4 : 0.1),
+        kind,
+        ang: 0,
+        orbit: 0,
+        wobble: Math.random() * Math.PI * 2,
+        twin: !kind && Math.random() < 0.16 ? 2.2 + Math.random() * 3.4 : 0,
+        glint: Math.random() * 26000,
+      };
+    };
+
+    const seed = () => {
+      const area = w * h;
+      const n = Math.round(Math.min(170, Math.max(56, area / 11000)));
+      motes = [];
+      for (let i = 0; i < n; i++) motes.push(make(0));
+      const near = Math.max(5, Math.round(n * 0.07));
+      for (let i = 0; i < near; i++) motes.push(make(1));
+      const shepherds = Math.max(6, Math.round(n * 0.07));
+      for (let i = 0; i < shepherds; i++) motes.push(make(2));
+    };
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.max(1, Math.floor(w * dpr));
+      canvas.height = Math.max(1, Math.floor(h * dpr));
+      seed();
+    };
+
+    const respawn = (m: Mote) => {
+      const fresh = make(m.kind);
+      const edge = Math.floor(Math.random() * 3);
+      if (edge === 0) {
+        fresh.x = Math.random() * w;
+        fresh.y = -12;
+      } else if (edge === 1) {
+        fresh.x = -12;
+        fresh.y = Math.random() * h * 0.72;
+      } else {
+        fresh.x = w + 12;
+        fresh.y = Math.random() * h * 0.72;
+      }
+      fresh.vx = (w * 0.5 - fresh.x) * 0.004 + (Math.random() - 0.5) * 4;
+      fresh.vy = (Math.random() - 0.2) * 5;
+      Object.assign(m, fresh);
+    };
+
+    const step = (m: Mote, dt: number, now: number, hx: number, hy: number, min: number) => {
+      if (m.kind === 2) {
+        const dir = m.wobble > 0.5 ? 1 : -1;
+        m.ang += dir * (0.035 + (1 - m.wobble) * 0.02) * dt;
+        const radius = m.orbit * (1 + Math.sin(now * 0.00007 + m.ang) * 0.012);
+        m.x = hx + Math.cos(m.ang) * radius;
+        m.y = hy + Math.sin(m.ang) * radius * 0.58;
+        return;
+      }
+      if (m.kind === 0) {
+        const dx = hx - m.x;
+        const dy = hy - m.y;
+        const dist = Math.hypot(dx, dy) + 12;
+        const reach = min * 0.34;
+        if (dist < reach) {
+          const t = 1 - dist / reach;
+          const pull = t * t * t * 16;
+          const shear = t * t * 5;
+          m.vx += (dx / dist) * pull * dt + (-dy / dist) * shear * dt;
+          m.vy += (dy / dist) * pull * dt + (dx / dist) * shear * dt;
+        }
+      }
+      m.x += m.vx * dt;
+      m.y += m.vy * dt;
+      m.vx *= 1 - dt * 0.12;
+      m.vy *= 1 - dt * 0.12;
+      if (Math.hypot(m.vx, m.vy) < 2.4) {
+        m.vx += Math.cos(m.wobble) * 3 * dt;
+        m.vy += Math.sin(m.wobble * 0.7) * 2.2 * dt;
+      }
+      const dx = m.x - hx;
+      const dy = m.y - hy;
+      const swallowed = m.kind === 0 && Math.hypot(dx, dy) < min * 0.07;
+      const off = m.x < -48 || m.x > w + 48 || m.y < -48 || m.y > h * 0.94;
+      if (swallowed || off) respawn(m);
+    };
+
+    const draw = (now: number, dt: number) => {
+      const poster = canvas.closest(".poster") as HTMLElement | null;
+      const px = poster ? parseFloat(poster.style.getPropertyValue("--px")) || 0 : 0;
+      const py = poster ? parseFloat(poster.style.getPropertyValue("--py")) || 0 : 0;
+      const hx = w * 0.5;
+      const hy = h * 0.5;
+      const min = Math.min(w, h);
+      const breathe = 0.84 + 0.16 * Math.sin(now * 0.00015);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+      for (const m of motes) {
+        if (dt > 0) step(m, dt, now, hx, hy, min);
+        const depth = m.kind === 1 ? 1.8 : m.kind === 2 ? 0.25 : 0.65;
+        const x = m.x + px * depth;
+        const y = m.y + py * depth;
+        const ground = y / h;
+        let fade = ground > 0.6 ? Math.max(0, 1 - (ground - 0.6) / 0.24) : 1;
+        const dist = Math.hypot(x - hx, y - hy);
+        const dissolve = min * 0.16;
+        if (m.kind !== 1 && dist < dissolve) fade *= dist / dissolve;
+        if (fade < 0.02) continue;
+        const lane = m.kind === 0 ? 0.74 + 0.26 * Math.sin(y / h * 3.1 + now * 0.000045) : 1;
+        const scint = 0.78 + 0.22 * Math.sin(now * 0.00045 + m.wobble);
+        let glint = 1;
+        const phase = (now + m.glint) % 72000;
+        if (m.kind === 0 && phase < 900) glint = 1 + Math.sin((phase / 900) * Math.PI) * 1.7;
+        const alpha = m.a * fade * breathe * lane * scint * glint;
+        ctx.globalAlpha = alpha;
+        if (m.kind === 1) {
+          const s = m.r * 7;
+          ctx.drawImage(sprite, x - s / 2, y - s / 2, s, s);
+          continue;
+        }
+        ctx.fillStyle = m.warm ? "rgb(226, 198, 154)" : "rgb(214, 224, 236)";
+        const halo = m.r * (m.kind === 2 ? 7 : 5.2);
+        ctx.globalAlpha = alpha * 0.45;
+        ctx.drawImage(sprite, x - halo / 2, y - halo / 2, halo, halo);
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(x, y, m.r, 0, Math.PI * 2);
+        ctx.fill();
+        if (m.twin) {
+          ctx.globalAlpha = alpha * 0.55;
+          ctx.beginPath();
+          ctx.arc(x + Math.cos(m.wobble) * m.twin, y + Math.sin(m.wobble) * m.twin * 0.65, m.r * 0.7, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        const speed = Math.hypot(m.vx, m.vy);
+        if (m.kind === 0 && speed > 22 && dist < min * 0.24) {
+          ctx.globalAlpha = alpha * 0.4;
+          ctx.strokeStyle = ctx.fillStyle;
+          ctx.lineWidth = Math.max(0.4, m.r * 0.55);
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x - m.vx * 0.04, y - m.vy * 0.04);
+          ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+    };
+
+    const tick = (now: number) => {
+      if (!alive) return;
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      draw(now, reduce ? 0 : dt);
+      if (!reduce) raf = requestAnimationFrame(tick);
+    };
+
+    const onVis = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+        return;
+      }
+      if (!reduce) {
+        last = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", onVis);
+    raf = requestAnimationFrame(tick);
+    return () => {
+      alive = false;
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
+
+  return <canvas ref={ref} className="void-dust" aria-hidden />;
+}
+
 const VOID = "/ca-void.mp4";
 
 export function ComingSoon() {
@@ -235,6 +492,7 @@ export function ComingSoon() {
           ) : null}
         </div>
         <div className="poster-veil" aria-hidden />
+        <VoidDust />
         <PosterDrift />
         <Link to="/menu" className="poster-field" aria-label="Open menu" />
         <div className="section section-body poster-lockup">

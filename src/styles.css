@@ -337,6 +337,15 @@ body {
   inset: 0;
 }
 
+.void-dust {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .logo-wrapper.image { margin: 0 auto 2em; }
 
 .graphic-logo {
