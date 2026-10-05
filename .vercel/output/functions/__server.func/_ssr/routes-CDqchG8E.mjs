@@ -1,9 +1,9 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { S as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { t as IdoruRoom } from "./idoru-room-DdojmQNB.mjs";
-import { r as useRoom } from "./router-CJda9EvC.mjs";
-import { t as MediaEmpireGate } from "./media-empire-gate-jeLgsA_v.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-CDFlCmtK.js
+import { r as useRoom } from "./router-DOligNj5.mjs";
+import { t as MediaEmpireGate } from "./media-empire-gate-D6L4Kzwy.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-CDqchG8E.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var OPERA = "https://opera.cyber-athens.ca";
@@ -159,18 +159,72 @@ function DoorPair() {
 		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WhisperLine, {})]
 	});
 }
+function PosterDrift() {
+	const hold = (0, import_react.useRef)(null);
+	(0, import_react.useEffect)(() => {
+		const poster = hold.current?.closest(".poster");
+		if (!poster) return;
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		const fine = window.matchMedia("(pointer: fine)").matches;
+		let tx = 0;
+		let ty = 0;
+		let mx = 0;
+		let my = 0;
+		let alive = true;
+		const onMove = (event) => {
+			const w = window.innerWidth || 1;
+			const h = window.innerHeight || 1;
+			tx = (event.clientX / w - .5) * 2;
+			ty = (event.clientY / h - .5) * 2;
+		};
+		if (fine) window.addEventListener("pointermove", onMove, { passive: true });
+		const tick = (now) => {
+			if (!alive) return;
+			const sway = fine ? 0 : Math.sin(now * 12e-5);
+			mx += (tx + sway * .18 - mx) * .04;
+			my += (ty + Math.cos(now * 9e-5) * (fine ? .03 : .12) - my) * .04;
+			poster.style.setProperty("--px", `${(mx * 10).toFixed(2)}px`);
+			poster.style.setProperty("--py", `${(my * 7).toFixed(2)}px`);
+			requestAnimationFrame(tick);
+		};
+		const id = requestAnimationFrame(tick);
+		return () => {
+			alive = false;
+			cancelAnimationFrame(id);
+			window.removeEventListener("pointermove", onMove);
+		};
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref: hold,
+		hidden: true
+	});
+}
+var VOID = "/ca-void.mp4";
 function ComingSoon() {
+	const [voidOn, setVoidOn] = (0, import_react.useState)(true);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "poster",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "poster-gate",
-				"aria-hidden": true
+				"aria-hidden": true,
+				children: voidOn ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("video", {
+					className: "poster-void",
+					src: VOID,
+					poster: "/ca-void-poster.jpg",
+					autoPlay: true,
+					muted: true,
+					loop: true,
+					playsInline: true,
+					preload: "auto",
+					onError: () => setVoidOn(false)
+				}) : null
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "poster-veil",
 				"aria-hidden": true
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PosterDrift, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 				to: "/menu",
 				className: "poster-field",
@@ -182,7 +236,7 @@ function ComingSoon() {
 					className: "logo-wrapper image",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 						className: "graphic-logo",
-						src: "/logo-ca.png",
+						src: "/logo-ca.png?v=2",
 						alt: "Cyber Athens",
 						width: 912,
 						height: 544

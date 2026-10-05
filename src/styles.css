@@ -202,6 +202,10 @@ body {
 
 .poster {
   isolation: isolate;
+  --px: 0px;
+  --py: 0px;
+  --sx: 0px;
+  --sy: 0px;
   color: inherit;
   text-decoration: none;
   background-color: var(--color-page);
@@ -230,12 +234,99 @@ body {
   z-index: 0;
   background-color: var(--color-page);
   pointer-events: none;
-  background-image: url("/poster-gate.jpg");
-  background-position: 50% 42%;
+  background-image: url("/ca-void-poster.jpg");
+  background-position: calc(50% + var(--px)) calc(42% + var(--py));
   background-repeat: no-repeat;
   background-size: cover;
   position: fixed;
   inset: 0;
+  overflow: hidden;
+}
+
+.poster-void {
+  position: absolute;
+  left: -6%;
+  top: -6%;
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  pointer-events: none;
+  transform: translate3d(var(--px), var(--py), 0);
+}
+
+.poster-dust {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.poster-star {
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  top: 16%;
+  width: 2px;
+  height: 2px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: #fff4d2;
+  box-shadow:
+    0 0 6px 1px rgba(255, 236, 190, 0.45),
+    0 0 22px 6px rgba(170, 150, 255, 0.12);
+  transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy)));
+  animation: star-hint 9s ease-in-out infinite;
+}
+
+.snake-eye {
+  position: fixed;
+  z-index: 1;
+  width: 2px;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(var(--px), var(--py));
+  animation: eye-emerge 26s ease-in-out infinite;
+}
+
+.snake-eye.blue {
+  left: 30%;
+  top: 52%;
+  background: #7eb6ff;
+  box-shadow: 0 0 4px 1px rgba(90, 150, 255, 0.85);
+}
+
+.snake-eye.red {
+  left: 70%;
+  top: 52%;
+  background: #ff3a3a;
+  box-shadow: 0 0 4px 1px rgba(255, 40, 40, 0.8);
+  animation-delay: -8s;
+}
+
+@keyframes gate-breathe {
+  0%, 20% { opacity: 1; }
+  48% { opacity: 0.36; }
+  70% { opacity: 0.64; }
+  88%, 100% { opacity: 1; }
+}
+
+@keyframes star-hint {
+  0%, 100% { opacity: 0.22; }
+  14% { opacity: 0.62; }
+  19% { opacity: 0.16; }
+  46% { opacity: 0.38; }
+  54% { opacity: 0.74; }
+  61% { opacity: 0.2; }
+  82% { opacity: 0.34; }
+}
+
+@keyframes eye-emerge {
+  0%, 46% { opacity: 0; }
+  64% { opacity: 0.95; }
+  100% { opacity: 0.42; }
 }
 
 .poster-veil {
@@ -1030,7 +1121,7 @@ body {
     max-height: 200px;
     padding-bottom: 0;
   }
-  .poster-gate { background-position: 50% 38%; }
+  .poster-gate { background-position: calc(50% + var(--px)) calc(38% + var(--py)); }
   .me-gate {
     background-image: url("/media-empire-gate-portrait.jpg");
     background-position: top;
@@ -1043,11 +1134,17 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .poster-gate,
+  .poster-star,
+  .snake-eye { animation: none; }
+  .poster-gate { opacity: 1; }
+  .poster-star { opacity: 0.28; }
+  .snake-eye { opacity: 0.4; }
   .coming-title.is-glitch {
     text-shadow: 0 1px 18px var(--color-page);
     animation: none;
   }
-.enter-gate.is-glitch .door-label { animation: none; text-shadow: none; }
+  .enter-gate.is-glitch .door-label { animation: none; text-shadow: none; }
   .boot-scan { animation: none; }
   .boot-fill { transition: none; }
   .graphic-logo,

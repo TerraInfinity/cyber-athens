@@ -4,7 +4,7 @@ import { a as getRequest, i as getServerFnById, n as createServerFn, o as __expo
 import { a as RADIO_PUBLIC, s as WIKI_PUBLIC, t as HUB_PUBLIC } from "./paths-Jte6anND.mjs";
 import { a as LogIn, i as LogOut, r as TriangleAlert } from "../_libs/lucide-react.mjs";
 import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-CJda9EvC.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-DOligNj5.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function AppErrorComponent({ error }) {
@@ -25,7 +25,7 @@ function AppErrorComponent({ error }) {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "max-w-md text-sm break-words text-zinc-500 dark:text-zinc-400",
-				children: error.message || "An unexpected error occurred. Try reloading the page."
+				children: error instanceof Error ? error.message : "An unexpected error occurred. Try reloading the page."
 			})
 		]
 	});
@@ -463,7 +463,7 @@ function SiteChrome() {
 		})]
 	})] });
 }
-var styles_default = "/assets/styles-Dq6DIIuE.css";
+var styles_default = "/assets/styles-CSSD-dPN.css";
 var APP_NAME = "Pulse of the Glåümosphere";
 var fetchSsoUser = createServerFn({ method: "GET" }).handler(createSsrRpc("d427fe6317f573fa38ddd6092319faa64007648068250a0fe0f7a20788000b7e"));
 var Route$10 = createRootRoute({
@@ -506,7 +506,7 @@ var Route$10 = createRootRoute({
 			{
 				rel: "preload",
 				as: "image",
-				href: "/logo-ca.png"
+				href: "/logo-ca.png?v=2"
 			}
 		]
 	}),
@@ -531,7 +531,7 @@ function RootDocument() {
 		})]
 	});
 }
-var $$splitComponentImporter$3 = () => import("./routes-CDFlCmtK.mjs");
+var $$splitComponentImporter$3 = () => import("./routes-CDqchG8E.mjs");
 var Route$9 = createFileRoute("/")({
 	loader: () => ({ host: readHostNow() }),
 	head: ({ loaderData }) => {
@@ -560,12 +560,12 @@ var Route$7 = createFileRoute("/logout")({ server: { handlers: {
 		return logoutRedirect(request);
 	}
 } } });
-var $$splitComponentImporter$1 = () => import("./media-empire-pkHYmMEt.mjs");
+var $$splitComponentImporter$1 = () => import("./media-empire-Dmp-VzN4.mjs");
 var Route$6 = createFileRoute("/media-empire")({
 	head: () => ({ meta: [{ title: "Media Empire" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./menu-Dhy4wrCe.mjs");
+var $$splitComponentImporter = () => import("./menu-CINtcrQu.mjs");
 var Route$5 = createFileRoute("/menu")({
 	head: () => ({ meta: [{ title: "Menu — Pulse of the Glåümosphere" }] }),
 	component: lazyRouteComponent($$splitComponentImporter, "component")

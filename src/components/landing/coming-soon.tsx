@@ -168,18 +168,80 @@ function DoorPair() {
   );
 }
 
+function PosterDrift() {
+  const hold = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const poster = hold.current?.closest(".poster") as HTMLElement | null;
+    if (!poster) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    let tx = 0;
+    let ty = 0;
+    let mx = 0;
+    let my = 0;
+    let alive = true;
+
+    const onMove = (event: PointerEvent) => {
+      const w = window.innerWidth || 1;
+      const h = window.innerHeight || 1;
+      tx = (event.clientX / w - 0.5) * 2;
+      ty = (event.clientY / h - 0.5) * 2;
+    };
+    if (fine) window.addEventListener("pointermove", onMove, { passive: true });
+
+    const tick = (now: number) => {
+      if (!alive) return;
+      const sway = fine ? 0 : Math.sin(now * 0.00012);
+      mx += (tx + sway * 0.18 - mx) * 0.04;
+      my += (ty + Math.cos(now * 0.00009) * (fine ? 0.03 : 0.12) - my) * 0.04;
+      poster.style.setProperty("--px", `${(mx * 10).toFixed(2)}px`);
+      poster.style.setProperty("--py", `${(my * 7).toFixed(2)}px`);
+      requestAnimationFrame(tick);
+    };
+    const id = requestAnimationFrame(tick);
+    return () => {
+      alive = false;
+      cancelAnimationFrame(id);
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, []);
+
+  return <div ref={hold} hidden />;
+}
+
+const VOID = "/ca-void.mp4";
+
 export function ComingSoon() {
+  const [voidOn, setVoidOn] = useState(true);
+
   return (
     <>
       <div className="poster">
-        <div className="poster-gate" aria-hidden />
+        <div className="poster-gate" aria-hidden>
+          {voidOn ? (
+            <video
+              className="poster-void"
+              src={VOID}
+              poster="/ca-void-poster.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              onError={() => setVoidOn(false)}
+            />
+          ) : null}
+        </div>
         <div className="poster-veil" aria-hidden />
+        <PosterDrift />
         <Link to="/menu" className="poster-field" aria-label="Open menu" />
         <div className="section section-body poster-lockup">
           <div className="logo-wrapper image">
             <img
               className="graphic-logo"
-              src="/logo-ca.png"
+              src="/logo-ca.png?v=2"
               alt="Cyber Athens"
               width={912}
               height={544}
